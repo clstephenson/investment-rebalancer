@@ -23,7 +23,7 @@ public class BalanceAssets extends Command {
             throw new InvalidCommandArgsException("ListAssets requires Holdings object to run.");
         }
 
-        if (holdings.getAssets().isEmpty()) {
+        if (holdings.getHoldings().isEmpty()) {
             output.append("There are no assets yet. Add an asset using the following command...\n");
             output.append(ADD_ASSET.getSyntaxHelp());
         } else {

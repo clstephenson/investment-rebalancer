@@ -1,6 +1,6 @@
 package com.clstephenson.portfoliorebalancer.commands;
 
-import com.clstephenson.portfoliorebalancer.Asset;
+import com.clstephenson.portfoliorebalancer.Holding;
 import com.clstephenson.portfoliorebalancer.Holdings;
 
 import java.math.BigDecimal;
@@ -33,18 +33,18 @@ public class UpdateAsset extends Command {
             throw new InvalidOptionsException("Invalid asset. Use the 'list' command to show available asset numbers.", syntax);
         }
 
-        Asset assetToUpdate = holdings.getAssetAtIndex(index)
+        Holding holdingToUpdate = holdings.getHoldingAtIndex(index)
                 .orElseThrow(() ->
                         new InvalidOptionsException("Invalid asset. Use the 'list' command to show available asset numbers."));
 
 
-        String assetName = commandOptions.getOptionValue("n").orElse(assetToUpdate.getName());
-        String sharePrice = commandOptions.getOptionValue("p").orElse(assetToUpdate.getPricePerShare().toString());
-        String numberOfShares = commandOptions.getOptionValue("s").orElse(assetToUpdate.getNumberOfShares().toString());
+        String assetName = commandOptions.getOptionValue("n").orElse(holdingToUpdate.getAsset().getName());
+        String sharePrice = commandOptions.getOptionValue("p").orElse(holdingToUpdate.getAsset().getPricePerShare().toString());
+        String numberOfShares = commandOptions.getOptionValue("s").orElse(holdingToUpdate.getNumberOfShares().toString());
 
-        assetToUpdate.setName(assetName);
-        assetToUpdate.setPricePerShare(new BigDecimal(sharePrice));
-        assetToUpdate.setNumberOfShares(new BigDecimal(numberOfShares));
-        return assetToUpdate.toString();
+        holdingToUpdate.getAsset().setName(assetName);
+        holdingToUpdate.getAsset().setPricePerShare(new BigDecimal(sharePrice));
+        holdingToUpdate.setNumberOfShares(new BigDecimal(numberOfShares));
+        return holdingToUpdate.toString();
     }
 }

@@ -1,6 +1,7 @@
 package com.clstephenson.portfoliorebalancer.commands;
 
 import com.clstephenson.portfoliorebalancer.Asset;
+import com.clstephenson.portfoliorebalancer.Holding;
 import com.clstephenson.portfoliorebalancer.Holdings;
 import com.clstephenson.portfoliorebalancer.Validations;
 
@@ -41,8 +42,9 @@ public class AddAsset extends Command {
             throw new InvalidOptionsException(message, syntax);
         }
 
-        Asset newAsset = new Asset(assetName, new BigDecimal(sharePrice), new BigDecimal(numberOfShares));
-        holdings.add(newAsset);
-        return newAsset.toString();
+        Asset asset = new Asset(assetName, new BigDecimal(sharePrice));
+        Holding newHolding = new Holding(asset, new BigDecimal(numberOfShares));
+        holdings.add(newHolding);
+        return newHolding.toString();
     }
 }

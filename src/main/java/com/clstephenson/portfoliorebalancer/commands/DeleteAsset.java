@@ -1,6 +1,6 @@
 package com.clstephenson.portfoliorebalancer.commands;
 
-import com.clstephenson.portfoliorebalancer.Asset;
+import com.clstephenson.portfoliorebalancer.Holding;
 import com.clstephenson.portfoliorebalancer.Holdings;
 
 import java.util.HashMap;
@@ -32,15 +32,15 @@ public class DeleteAsset extends Command {
             throw new InvalidOptionsException("Invalid asset. Use the 'list' command to show available asset numbers.");
         }
 
-        Asset assetToDelete = holdings.getAssetAtIndex(index)
+        Holding holdingToDelete = holdings.getHoldingAtIndex(index)
                 .orElseThrow(() ->
                         new InvalidOptionsException("Asset option must be a number. Use the 'list' command to show available asset numbers."));
 
-        return holdings.deleteAsset(assetToDelete) ?
+        return holdings.deleteHolding(holdingToDelete) ?
                 String.format(
                         "%s asset with %s shares deleted.",
-                        assetToDelete.getName(),
-                        assetToDelete.getNumberOfShares().toString()) :
+                        holdingToDelete.getAsset().getName(),
+                        holdingToDelete.getNumberOfShares().toString()) :
                 "No assets were deleted.";
     }
 }

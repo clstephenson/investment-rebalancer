@@ -16,6 +16,10 @@ public class AssetMix {
                 );
     }
 
+    public Map<MinorAssetClass, Double> getMixItems() {
+        return mixItems;
+    }
+
     public double getMixPercentageFor(MinorAssetClass assetClass) {
         return this.mixItems.get(assetClass);
     }

@@ -1,11 +1,10 @@
 package com.clstephenson.portfoliorebalancer.commands;
 
-import com.clstephenson.portfoliorebalancer.Asset;
+import com.clstephenson.portfoliorebalancer.Holding;
 import com.clstephenson.portfoliorebalancer.Holdings;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 import static com.clstephenson.portfoliorebalancer.commands.AvailableCommands.ADD_ASSET;
 
@@ -21,31 +20,31 @@ public class ListAssets extends Command {
             throw new InvalidCommandArgsException("ListAssets requires Holdings object to run.");
         }
 
-        if (holdings.getAssets().isEmpty()) {
+        if (holdings.getHoldings().isEmpty()) {
             output.append("There are no assets yet. Add an asset using the following command...\n");
             output.append(ADD_ASSET.getSyntaxHelp());
         } else {
-            Holdings matchedAssets = new Holdings();
+            Holdings matchedHoldings = new Holdings();
             if (commandOptions != null) {
                 commandOptions.getOptionValue("n")
                         .ifPresent(s -> {
-                            holdings.getAssets().stream()
-                                    .filter(asset -> asset.getName().equalsIgnoreCase(s))
-                                    .forEach(matchedAssets::add);
+                            holdings.getHoldings().stream()
+                                    .filter(holding -> holding.getAsset().getName().equalsIgnoreCase(s))
+                                    .forEach(matchedHoldings::add);
                         });
             }
 
-            if (matchedAssets.getAssets().isEmpty()) {
+            if (matchedHoldings.getHoldings().isEmpty()) {
                 output.append(buildOutputString(holdings));
             } else {
-                output.append(buildOutputString(matchedAssets));
+                output.append(buildOutputString(matchedHoldings));
             }
         }
 
         return output.toString();
     }
 
-    private String buildOutputString (Holdings assets) {
+    private String buildOutputString (Holdings holdings) {
         StringBuilder output = new StringBuilder();
 
         final String HEADER_ASSET = "Asset";
@@ -53,8 +52,8 @@ public class ListAssets extends Command {
         final String HEADER_SHARES = "Qty Shares";
         final String HEADER_VALUE = "Value ($)";
 
-        int maxNameLength = assets.getAssets().stream()
-                .mapToInt(value -> value.getName().length()).max().getAsInt();
+        int maxNameLength = holdings.getHoldings().stream()
+                .mapToInt(value -> value.getAsset().getName().length()).max().getAsInt();
         if (HEADER_ASSET.length() > maxNameLength) {
             maxNameLength = HEADER_ASSET.length();
         }
@@ -67,12 +66,12 @@ public class ListAssets extends Command {
                 nameColumnFormat, priceColumnFormat, sharesColumnFormat, valueColumnFormat);
         output.append(String.format(nameColumnFormat + "     %2$-11s     %3$-11s     %4$-11s%n",
                 HEADER_ASSET, HEADER_PRICE, HEADER_SHARES, HEADER_VALUE));
-        for (Asset asset : assets.getAssets()) {
-            int index = assets.getAssets().indexOf(asset);
-            String assetNameDisplay = String.format("%d - %s", index, asset.getName());
+        for (Holding holding : holdings.getHoldings()) {
+            int index = holdings.getHoldings().indexOf(holding);
+            String assetNameDisplay = String.format("%d - %s", index, holding.getAsset().getName());
             output.append(
                     String.format(format,
-                            assetNameDisplay, asset.getPricePerShare(), asset.getNumberOfShares(), asset.getAssetValue())
+                            assetNameDisplay, holding.getAsset().getPricePerShare(), holding.getNumberOfShares(), holding.getValue())
             );
         }
 

@@ -8,32 +8,36 @@ import java.util.Optional;
 
 public class Holdings {
 
-    private List<Asset> assets;
+    private List<Holding> holdings;
 
     public Holdings() {
-        assets = new ArrayList<>();
+        holdings = new ArrayList<>();
     }
 
-    public List<Asset> getAssets() {
-        return assets;
+    public List<Holding> getHoldings() {
+        return holdings;
     }
 
-    public Optional<Asset> getAssetAtIndex(int index) {
-        return index < 0 || index >= assets.size() ?
+    public Optional<Holding> getHoldingAtIndex(int index) {
+        return index < 0 || index >= holdings.size() ?
                 Optional.empty() :
-                Optional.of(assets.get(index));
+                Optional.of(holdings.get(index));
     }
 
-    public void add(Asset asset) {
-        assets.add(asset);
+    public void add(Holding holding) {
+        //todo: return optional of the added holding object
+        holdings.add(holding);
     }
 
-    public boolean deleteAsset(Asset asset) {
-        return assets.remove(asset);
+    public boolean deleteHolding(Holding holding) {
+        return holdings.remove(holding);
     }
 
-    public BigDecimal getTotalValueOfAssets() {
-        BigDecimal totalValue =  assets.stream().map(Asset::getAssetValue).reduce(BigDecimal.ZERO, BigDecimal::add);
+    public BigDecimal getTotalValueOfHoldings() {
+        BigDecimal totalValue =
+                holdings.stream()
+                        .map(Holding::getValue)
+                        .reduce(BigDecimal.ZERO, BigDecimal::add);
         return totalValue;
     }
 
@@ -42,18 +46,18 @@ public class Holdings {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Holdings holdings = (Holdings) o;
-        return assets.equals(holdings.assets);
+        return holdings.equals(holdings.holdings);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(assets);
+        return Objects.hash(holdings);
     }
 
     @Override
     public String toString() {
-        return "com.clstephenson.portfoliorebalancer.Holdings{" +
-                "assets=" + assets +
+        return "Holdings{" +
+                "holdings=" + holdings +
                 '}';
     }
 }

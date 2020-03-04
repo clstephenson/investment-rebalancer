@@ -1,6 +1,5 @@
 package com.clstephenson.portfoliorebalancer.commands;
 
-import com.clstephenson.portfoliorebalancer.Asset;
 import com.clstephenson.portfoliorebalancer.Holdings;
 
 import java.util.HashMap;

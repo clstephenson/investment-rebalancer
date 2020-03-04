@@ -1,40 +1,38 @@
 package com.clstephenson.portfoliorebalancer;
 
-import com.clstephenson.portfoliorebalancer.Asset;
-import com.clstephenson.portfoliorebalancer.Holdings;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.runner.RunWith;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.mockito.junit.MockitoJUnitRunner;
 
 import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
+@RunWith(MockitoJUnitRunner.class)
 class HoldingsTest {
 
     Holdings holdings;
-    Asset stock0;
-    Asset stock1;
+    @Mock Holding holding1;
+    @Mock Holding holding2;
 
     @BeforeEach
     void setup() {
+        MockitoAnnotations.initMocks(this);
+
+        when(holding1.getValue()).thenReturn(new BigDecimal(50));
+        when(holding2.getValue()).thenReturn(new BigDecimal(113.187));
+
         holdings = new Holdings();
-        stock0 = new Asset(
-                "test asset 0",
-                "ABCD",
-                new BigDecimal("2.00"),
-                new BigDecimal("25")
-        );
-        stock1 = new Asset(
-                "test asset 1",
-                "EFGH",
-                new BigDecimal("1.50"),
-                new BigDecimal("75.458")
-        );
-        holdings.add(stock0);
-        holdings.add(stock1);
+        holdings.add(holding1);
+        holdings.add(holding2);
     }
 
     @AfterEach
@@ -44,35 +42,34 @@ class HoldingsTest {
 
     @Test
     void givenHoldings_whenAddAsset_theAssetIsFoundInHoldings() {
-        Asset testAsset = new Asset("someStock", "SYMBOL", BigDecimal.ONE, BigDecimal.ONE);
-        assertThat(holdings.getAssets(), Matchers.not(Matchers.hasItem(testAsset)));
-        holdings.add(testAsset);
-        assertThat(holdings.getAssets(), Matchers.hasItem(testAsset));
+        Holding testHolding = new Holding(mock(Asset.class), BigDecimal.ONE);
+        assertThat(holdings.getHoldings(), Matchers.not(Matchers.hasItem(testHolding)));
+        holdings.add(testHolding);
+        assertThat(holdings.getHoldings(), Matchers.hasItem(testHolding));
     }
 
     @Test
     void givenHoldings_whenTotalValueOfAssetsRequested_returnSumOfEachAssetValue() {
-        BigDecimal actualValue = holdings.getTotalValueOfAssets();
         BigDecimal expectedValue = new BigDecimal("163.187");
         BigDecimal allowedError = new BigDecimal("0.005");
-        assertThat(holdings.getTotalValueOfAssets(), Matchers.closeTo(expectedValue, allowedError));
+        assertThat(holdings.getTotalValueOfHoldings(), Matchers.closeTo(expectedValue, allowedError));
     }
 
     @Test
     void givenHoldings_whenGetAssetAtIndex_correctAssetIsReturned() {
-        assertThat(holdings.getAssetAtIndex(1).get(), Matchers.is(stock1));
+        assertThat(holdings.getHoldingAtIndex(1).get(), Matchers.is(holding2));
     }
 
     @Test
     void givenHoldings_whenGetAssetAtOutOfBoundsIndex_returnsEmptyOptional() {
-        int size = holdings.getAssets().size();
-        assertThat(holdings.getAssetAtIndex(size), Matchers.is(Optional.empty()));
+        int size = holdings.getHoldings().size();
+        assertThat(holdings.getHoldingAtIndex(size), Matchers.is(Optional.empty()));
     }
 
     @Test
     void givenHoldings_whenRemoveAssetAtIndexZero_holdingContainsOnlyAsset1() {
-        assertThat(holdings.getAssets(), Matchers.contains(stock0, stock1));
-        holdings.deleteAsset(stock0);
-        assertThat(holdings.getAssets(), Matchers.contains(stock1));
+        assertThat(holdings.getHoldings(), Matchers.contains(holding1, holding2));
+        holdings.deleteHolding(holding1);
+        assertThat(holdings.getHoldings(), Matchers.contains(holding2));
     }
 }
