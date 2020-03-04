@@ -2,58 +2,103 @@ package com.clstephenson.portfoliorebalancer.commands;
 
 import com.clstephenson.portfoliorebalancer.Holdings;
 
-import java.util.HashMap;
-import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 
 public abstract class Command {
 
-    public static String processCommand(String userInput, Holdings holdings, HashMap<String, List<String>> assetClasses)
+    public static Optional<String> processCommand(Map<ValidCommandArgType, Object> commandArgs)
             throws InvalidCommandException, InvalidOptionsException, InvalidCommandArgsException {
-        String commandInput;
-        CommandOptions commandOptions = null;
 
-        if (userInput.contains("-") && userInput.contains(" ")) {
-            commandInput = userInput.substring(0, userInput.indexOf(" ")).toLowerCase();
-            commandOptions = CommandOptions.getCommandOptions(userInput);
-        } else {
-            commandInput = userInput.trim();
-        }
+        String primaryCommandInput =
+                getStringFromArgs(commandArgs.get(ValidCommandArgType.PRIMARY_COMMAND_INPUT))
+                        .orElseThrow(InvalidCommandException::new);
 
-        AvailableCommands command = null;
-        command = AvailableCommands.getCommandFromInstruction(commandInput)
-                .orElseThrow(() -> new InvalidCommandException(String.format("Unknown command: %s", commandInput)));
+        CommandOptions commandOptions =
+                getCommandOptionsFromArgs(commandArgs.get(ValidCommandArgType.COMMAND_OPTIONS))
+                        .orElseThrow(InvalidCommandException::new);
 
-        String commandOutput = null;
+        AvailableCommands command =
+                AvailableCommands.getCommandFromInstruction(primaryCommandInput)
+                        .orElseThrow(() -> new InvalidCommandException(String.format("Unknown command: %s", primaryCommandInput)));
 
-        //todo: create builder class for commands
+        Holdings holdings =
+                getHoldingsFromArgs(commandArgs.get(ValidCommandArgType.HOLDINGS))
+                        .orElseThrow(InvalidCommandException::new);
+
+        String commandOutput = getCommand(command).get()
+                .run(holdings, commandOptions);
+        return Optional.ofNullable(commandOutput);
+    }
+
+    private static Optional<Command> getCommand(AvailableCommands command) {
+        Command returnVal;
         switch (command) {
             case LIST_ASSETS:
-                commandOutput = new ListAssets().run(holdings, assetClasses, commandOptions);
+                returnVal = new ListAssets();
                 break;
             case LIST_ASSET_CLASSES:
-                commandOutput = new ListAssetClasses().run(null, assetClasses, commandOptions);
+                returnVal = new ListAssetClasses();
                 break;
             case ADD_ASSET:
-                commandOutput = new AddAsset().run(holdings, null, commandOptions);
+                returnVal = new AddAsset();
                 break;
             case DELETE_ASSET:
-                commandOutput = new DeleteAsset().run(holdings, null, commandOptions);
+                returnVal = new DeleteAsset();
                 break;
             case UPDATE_ASSET:
-                commandOutput = new UpdateAsset().run(holdings, null, commandOptions);
+                returnVal = new UpdateAsset();
                 break;
             case BALANCE:
-                commandOutput = new BalanceAssets().run(holdings, assetClasses, commandOptions);
+                returnVal = new BalanceAssets();
                 break;
             case EXIT_PROGRAM:
-                new ExitProgram().run(null, null, null);
+                returnVal = new ExitProgram();
                 break;
+            default:
+                returnVal = null;
         }
+        return Optional.of(returnVal);
+    }
 
-        return commandOutput;
+    private static Optional<String> getStringFromArgs(Object arg) {
+        Optional<String> returnVal;
+        if (arg instanceof String) {
+            returnVal = Optional.of((String) arg);
+        } else {
+            returnVal = Optional.empty();
+        }
+        return returnVal;
+    }
+
+    private static Optional<CommandOptions> getCommandOptionsFromArgs(Object arg) {
+        Optional<CommandOptions> returnVal;
+        if (arg instanceof CommandOptions) {
+            returnVal = Optional.of((CommandOptions) arg);
+        } else {
+            returnVal = Optional.empty();
+        }
+        return returnVal;
+    }
+
+    private static Optional<Holdings> getHoldingsFromArgs(Object arg) {
+        Optional<Holdings> returnVal;
+        if (arg instanceof Holdings) {
+            returnVal = Optional.of((Holdings) arg);
+        } else {
+            returnVal = Optional.empty();
+        }
+        return returnVal;
+    }
+
+    public abstract String run(Holdings holdings, CommandOptions commandOptions)
+            throws InvalidCommandArgsException, InvalidOptionsException;
+
+    enum ValidCommandArgType {
+        HOLDINGS,
+        PRIMARY_COMMAND_INPUT,
+        COMMAND_OPTIONS
     }
 
 
-    public abstract String run(Holdings holdings, HashMap<String, List<String>> assetClasses, CommandOptions commandOptions)
-            throws InvalidCommandArgsException, InvalidOptionsException;
 }

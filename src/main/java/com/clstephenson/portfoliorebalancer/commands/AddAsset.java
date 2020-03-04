@@ -6,13 +6,11 @@ import com.clstephenson.portfoliorebalancer.Holdings;
 import com.clstephenson.portfoliorebalancer.Validations;
 
 import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.List;
 
 public class AddAsset extends Command {
 
     @Override
-    public String run(Holdings holdings, HashMap<String, List<String>> assetClasses, CommandOptions commandOptions)
+    public String run(Holdings holdings, CommandOptions commandOptions)
             throws InvalidCommandArgsException, InvalidOptionsException {
 
         String syntax = AvailableCommands.ADD_ASSET.getSyntaxHelp();

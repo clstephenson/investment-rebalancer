@@ -3,15 +3,12 @@ package com.clstephenson.portfoliorebalancer.commands;
 import com.clstephenson.portfoliorebalancer.Holding;
 import com.clstephenson.portfoliorebalancer.Holdings;
 
-import java.util.HashMap;
-import java.util.List;
-
 import static com.clstephenson.portfoliorebalancer.commands.AvailableCommands.ADD_ASSET;
 
 public class ListAssets extends Command {
 
     @Override
-    public String run(Holdings holdings, HashMap<String, List<String>> assetClasses, CommandOptions commandOptions)
+    public String run(Holdings holdings, CommandOptions commandOptions)
             throws InvalidCommandArgsException {
 
         StringBuilder output = new StringBuilder();

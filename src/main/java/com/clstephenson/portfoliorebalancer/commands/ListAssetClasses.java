@@ -1,25 +1,22 @@
 package com.clstephenson.portfoliorebalancer.commands;
 
+import com.clstephenson.portfoliorebalancer.AssetClass;
+import com.clstephenson.portfoliorebalancer.AssetClassCategory;
 import com.clstephenson.portfoliorebalancer.Holdings;
-import com.clstephenson.portfoliorebalancer.MajorAssetClass;
-import com.clstephenson.portfoliorebalancer.MinorAssetClass;
-
-import java.util.HashMap;
-import java.util.List;
 
 public class ListAssetClasses extends Command {
 
     @Override
-    public String run(Holdings holdings, HashMap<String, List<String>> assetClasses, CommandOptions commandOptions)
+    public String run(Holdings holdings, CommandOptions commandOptions)
             throws InvalidCommandArgsException {
 
         StringBuilder output = new StringBuilder();
 
-        for (MajorAssetClass majorAssetClass : MajorAssetClass.values()) {
-            output.append(majorAssetClass.getName()).append("\n");
-            for (MinorAssetClass minorAssetClass : MinorAssetClass.values()) {
-                if (minorAssetClass.getParentAssetClass().equals(majorAssetClass)) {
-                    output.append(String.format("  - %s%n", minorAssetClass.getName()));
+        for (AssetClassCategory assetClassCategory : AssetClassCategory.values()) {
+            output.append(assetClassCategory.getName()).append("\n");
+            for (AssetClass assetClass : AssetClass.values()) {
+                if (assetClass.getAssetCategory().equals(assetClassCategory)) {
+                    output.append(String.format("  - %s%n", assetClass.getName()));
                 }
             }
         }

@@ -7,24 +7,24 @@ import java.util.stream.Collectors;
 
 public class AssetMix {
 
-    private final Map<MinorAssetClass, Double> mixItems;
+    private final Map<AssetClass, Double> mixItems;
 
     public AssetMix() {
-        this.mixItems = Arrays.stream(MinorAssetClass.values())
+        this.mixItems = Arrays.stream(AssetClass.values())
                 .collect(
-                        Collectors.toMap(minorAssetClass -> minorAssetClass, minorAssetClass -> 0d)
+                        Collectors.toMap(assetClass -> assetClass, assetClass -> 0d)
                 );
     }
 
-    public Map<MinorAssetClass, Double> getMixItems() {
+    public Map<AssetClass, Double> getMixItems() {
         return mixItems;
     }
 
-    public double getMixPercentageFor(MinorAssetClass assetClass) {
+    public double getMixPercentageFor(AssetClass assetClass) {
         return this.mixItems.get(assetClass);
     }
 
-    public void updatePercentageFor(MinorAssetClass assetClass, double percentage) throws NumberFormatException {
+    public void updatePercentageFor(AssetClass assetClass, double percentage) throws NumberFormatException {
         if (percentage < 0 || percentage > 100) {
             throw new NumberFormatException("percentage must be between 0 and 100.");
         }

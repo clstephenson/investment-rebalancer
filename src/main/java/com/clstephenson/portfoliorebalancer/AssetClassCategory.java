@@ -1,6 +1,6 @@
 package com.clstephenson.portfoliorebalancer;
 
-public enum MajorAssetClass {
+public enum AssetClassCategory {
     STOCKS ("Stocks"),
     BONDS ("Bonds"),
     CASH ("Cash")
@@ -8,7 +8,7 @@ public enum MajorAssetClass {
 
     private final String name;
 
-    MajorAssetClass(String name) {
+    AssetClassCategory(String name) {
         this.name = name;
     }
 
