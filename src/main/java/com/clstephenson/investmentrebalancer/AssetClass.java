@@ -1,4 +1,4 @@
-package com.clstephenson.portfoliorebalancer;
+package com.clstephenson.investmentrebalancer;
 
 public enum AssetClass {
     CASH ("Cash", AssetClassCategory.CASH),

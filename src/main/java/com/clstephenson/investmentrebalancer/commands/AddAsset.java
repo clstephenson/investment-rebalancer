@@ -1,9 +1,9 @@
-package com.clstephenson.portfoliorebalancer.commands;
+package com.clstephenson.investmentrebalancer.commands;
 
-import com.clstephenson.portfoliorebalancer.Asset;
-import com.clstephenson.portfoliorebalancer.Holding;
-import com.clstephenson.portfoliorebalancer.Holdings;
-import com.clstephenson.portfoliorebalancer.Validations;
+import com.clstephenson.investmentrebalancer.Asset;
+import com.clstephenson.investmentrebalancer.Holding;
+import com.clstephenson.investmentrebalancer.Holdings;
+import com.clstephenson.investmentrebalancer.Validations;
 
 import java.math.BigDecimal;
 

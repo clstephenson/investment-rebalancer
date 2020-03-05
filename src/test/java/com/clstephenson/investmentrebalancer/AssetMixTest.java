@@ -1,4 +1,4 @@
-package com.clstephenson.portfoliorebalancer;
+package com.clstephenson.investmentrebalancer;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;

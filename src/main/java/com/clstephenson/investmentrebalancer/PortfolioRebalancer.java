@@ -1,11 +1,11 @@
-package com.clstephenson.portfoliorebalancer;
+package com.clstephenson.investmentrebalancer;
 
-import com.clstephenson.portfoliorebalancer.commands.*;
+import com.clstephenson.investmentrebalancer.commands.*;
 
 import java.util.Arrays;
 import java.util.Scanner;
 
-import static com.clstephenson.portfoliorebalancer.commands.AvailableCommands.values;
+import static com.clstephenson.investmentrebalancer.commands.AvailableCommands.values;
 
 public class PortfolioRebalancer {
 

@@ -1,8 +1,8 @@
-package com.clstephenson.portfoliorebalancer.commands;
+package com.clstephenson.investmentrebalancer.commands;
 
-import com.clstephenson.portfoliorebalancer.AssetClass;
-import com.clstephenson.portfoliorebalancer.AssetClassCategory;
-import com.clstephenson.portfoliorebalancer.Holdings;
+import com.clstephenson.investmentrebalancer.AssetClass;
+import com.clstephenson.investmentrebalancer.AssetClassCategory;
+import com.clstephenson.investmentrebalancer.Holdings;
 
 public class ListAssetClasses extends Command {
 

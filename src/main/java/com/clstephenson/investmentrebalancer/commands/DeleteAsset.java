@@ -1,7 +1,7 @@
-package com.clstephenson.portfoliorebalancer.commands;
+package com.clstephenson.investmentrebalancer.commands;
 
-import com.clstephenson.portfoliorebalancer.Holding;
-import com.clstephenson.portfoliorebalancer.Holdings;
+import com.clstephenson.investmentrebalancer.Holding;
+import com.clstephenson.investmentrebalancer.Holdings;
 
 public class DeleteAsset extends Command {
 

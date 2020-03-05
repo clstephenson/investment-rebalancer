@@ -1,4 +1,4 @@
-package com.clstephenson.portfoliorebalancer;
+package com.clstephenson.investmentrebalancer;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;

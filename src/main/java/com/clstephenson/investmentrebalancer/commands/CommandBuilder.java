@@ -1,7 +1,7 @@
-package com.clstephenson.portfoliorebalancer.commands;
+package com.clstephenson.investmentrebalancer.commands;
 
-import com.clstephenson.portfoliorebalancer.Holdings;
-import com.clstephenson.portfoliorebalancer.commands.Command.ValidCommandArgType;
+import com.clstephenson.investmentrebalancer.Holdings;
+import com.clstephenson.investmentrebalancer.commands.Command.ValidCommandArgType;
 
 import java.util.HashMap;
 import java.util.Map;

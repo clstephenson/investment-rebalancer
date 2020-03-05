@@ -1,6 +1,6 @@
-package com.clstephenson.portfoliorebalancer.commands;
+package com.clstephenson.investmentrebalancer.commands;
 
-import com.clstephenson.portfoliorebalancer.Holdings;
+import com.clstephenson.investmentrebalancer.Holdings;
 
 import java.util.Map;
 import java.util.Optional;

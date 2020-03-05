@@ -1,4 +1,4 @@
-package com.clstephenson.portfoliorebalancer.commands;
+package com.clstephenson.investmentrebalancer.commands;
 
 import java.util.HashMap;
 import java.util.Map;

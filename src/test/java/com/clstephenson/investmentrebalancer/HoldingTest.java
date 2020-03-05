@@ -1,4 +1,4 @@
-package com.clstephenson.portfoliorebalancer;
+package com.clstephenson.investmentrebalancer;
 
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;

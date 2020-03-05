@@ -1,4 +1,4 @@
-package com.clstephenson.portfoliorebalancer;
+package com.clstephenson.investmentrebalancer;
 
 import java.util.regex.Pattern;
 
