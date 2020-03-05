@@ -16,7 +16,7 @@ public abstract class Command {
 
         CommandOptions commandOptions =
                 getCommandOptionsFromArgs(commandArgs.get(ValidCommandArgType.COMMAND_OPTIONS))
-                        .orElseThrow(InvalidCommandException::new);
+                        .orElse(null);
 
         AvailableCommands command =
                 AvailableCommands.getCommandFromInstruction(primaryCommandInput)
