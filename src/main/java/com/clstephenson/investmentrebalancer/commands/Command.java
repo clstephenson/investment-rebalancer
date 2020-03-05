@@ -40,6 +40,9 @@ public abstract class Command {
             case LIST_ASSET_CLASSES:
                 returnVal = new ListAssetClasses();
                 break;
+            case SHOW_ASSET_DETAILS:
+                returnVal = new ShowAssetDetails();
+                break;
             case ADD_ASSET:
                 returnVal = new AddAsset();
                 break;

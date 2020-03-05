@@ -13,22 +13,27 @@ be listed.
 holdings
 holdings -n [asset name]
 ```
-### Add a new asset.
-```    
-add -n [asset name] -p [share price] -s [number of shares]
-```    
-### Remove an asset from the list of holdings.
-```    
-delete -i [asset number from list]
-```
-### Update an asset's information.
-```    
-update -i [asset ID from list] -n [asset name] -p [share price] -s [number of shares]
-```    
-### Show list of asset classes per configuration in asset-classes.txt file.
+### Show list of asset classes
 ```
 classes
 ```
+### Show asset details
+shows name, symbol, price, total shares of asset in holdings, and asset mix. The name option is optional, and will filter the list to show a single asset. Without the option, all assets are shown.
+```
+assets -n [name]
+```
+### Add a new holding
+```    
+add -n [asset name] -p [share price] -s [number of shares]
+```    
+### Remove holding
+```    
+delete -i [asset number from list]
+```
+### Update asset or holding information
+```    
+update -i [asset ID from list] -n [asset name] -p [share price] -s [number of shares]
+```    
 ### Show re-balance results.
 ```
 balance

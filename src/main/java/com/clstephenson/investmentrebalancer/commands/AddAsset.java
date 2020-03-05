@@ -6,6 +6,7 @@ import com.clstephenson.investmentrebalancer.Holdings;
 import com.clstephenson.investmentrebalancer.Validations;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 public class AddAsset extends Command {
 
@@ -40,9 +41,14 @@ public class AddAsset extends Command {
             throw new InvalidOptionsException(message, syntax);
         }
 
-        Asset asset = new Asset(assetName, new BigDecimal(sharePrice));
+        Optional<Asset> optionalAsset = holdings.getAssetFromHoldings(assetName);
+        Asset asset = optionalAsset.orElseGet(
+                () -> new Asset(assetName, new BigDecimal(sharePrice))
+        );
+        asset.setPricePerShare(new BigDecimal(sharePrice));
         Holding newHolding = new Holding(asset, new BigDecimal(numberOfShares));
         holdings.add(newHolding);
-        return newHolding.toString();
+        return String.format("%s\nNote: Existing holdings with asset=%s were updated to reflect a price of %s per share.",
+                newHolding.toString(), asset.getName(), asset.getPricePerShare().toString());
     }
 }

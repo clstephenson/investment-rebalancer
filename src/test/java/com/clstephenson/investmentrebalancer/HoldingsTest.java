@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import org.mockito.junit.MockitoJUnitRunner;
 
@@ -13,6 +14,7 @@ import java.math.BigDecimal;
 import java.util.Optional;
 
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.CoreMatchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -71,5 +73,15 @@ class HoldingsTest {
         assertThat(holdings.getHoldings(), Matchers.contains(holding1, holding2));
         holdings.deleteHolding(holding1);
         assertThat(holdings.getHoldings(), Matchers.contains(holding2));
+    }
+
+    @Test
+    void givenHoldingsWithTwoAssets_whenGetAssetFromHoldings_correctAssetIsReturned() {
+        Holdings testHoldings = new Holdings();
+        Asset asset1 = new Asset("stock", "", BigDecimal.TEN, Mockito.mock(AssetMix.class));
+        Asset asset2 = new Asset("stock2", "", BigDecimal.ONE, Mockito.mock(AssetMix.class));
+        testHoldings.add(new Holding(asset1, BigDecimal.ONE));
+        testHoldings.add(new Holding(asset2, BigDecimal.ONE));
+        assertThat(testHoldings.getAssetFromHoldings("stock").get(), is(asset1));
     }
 }
