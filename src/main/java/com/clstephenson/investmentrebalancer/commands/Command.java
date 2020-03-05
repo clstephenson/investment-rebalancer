@@ -34,8 +34,8 @@ public abstract class Command {
     private static Optional<Command> getCommand(AvailableCommands command) {
         Command returnVal;
         switch (command) {
-            case LIST_ASSETS:
-                returnVal = new ListAssets();
+            case LIST_HOLDINGS:
+                returnVal = new ListHoldings();
                 break;
             case LIST_ASSET_CLASSES:
                 returnVal = new ListAssetClasses();

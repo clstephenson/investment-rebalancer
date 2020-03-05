@@ -5,7 +5,7 @@ import com.clstephenson.investmentrebalancer.Holdings;
 
 import static com.clstephenson.investmentrebalancer.commands.AvailableCommands.ADD_ASSET;
 
-public class ListAssets extends Command {
+public class ListHoldings extends Command {
 
     @Override
     public String run(Holdings holdings, CommandOptions commandOptions)
@@ -14,11 +14,11 @@ public class ListAssets extends Command {
         StringBuilder output = new StringBuilder();
 
         if (holdings == null) {
-            throw new InvalidCommandArgsException("ListAssets requires Holdings object to run.");
+            throw new InvalidCommandArgsException("ListHoldings requires Holdings object to run.");
         }
 
         if (holdings.getHoldings().isEmpty()) {
-            output.append("There are no assets yet. Add an asset using the following command...\n");
+            output.append("There are no holdings yet. Use the following command to add one...\n");
             output.append(ADD_ASSET.getSyntaxHelp());
         } else {
             Holdings matchedHoldings = new Holdings();

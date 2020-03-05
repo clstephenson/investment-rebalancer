@@ -5,11 +5,11 @@ import java.util.Optional;
 
 public enum AvailableCommands {
 
-    LIST_ASSETS("list", "list -n [asset name] -p [share price] -s [number of shares]"),
-    ADD_ASSET("add", "add -n [asset name] -p [share price] -s [number of shares]"),
-    DELETE_ASSET("delete", "delete -i [asset ID from list]"),
-    UPDATE_ASSET ("update", "update -i [asset ID from list] -n [asset name] -p [share price] -s [number of shares]"),
+    LIST_HOLDINGS("holdings", "holdings -n [asset name]"),
     LIST_ASSET_CLASSES("classes", "classes"),
+    ADD_ASSET("add", "add -n [asset name] -p [share price] -s [number of shares]"),
+    UPDATE_ASSET ("update", "update -i [asset ID from list] -n [asset name] -p [share price] -s [number of shares]"),
+    DELETE_ASSET("delete", "delete -i [asset ID from list]"),
     BALANCE("balance", ""),
     EXIT_PROGRAM("exit", "exit")
     ;
