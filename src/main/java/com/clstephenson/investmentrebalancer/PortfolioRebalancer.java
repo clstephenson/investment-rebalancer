@@ -4,7 +4,10 @@ import com.clstephenson.investmentrebalancer.commandrunner.*;
 import com.clstephenson.investmentrebalancer.commandrunner.commands.Command;
 
 import java.util.Arrays;
+import java.util.Map;
 import java.util.Scanner;
+import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 import static com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands.values;
 
@@ -28,7 +31,21 @@ public class PortfolioRebalancer {
             String userInput = scanner.next();
 
             try {
-                String result = getCommandFromInput(userInput).run();
+                Command command = getCommandFromInput(userInput);
+                if (command.getCommandType() == AvailableCommands.UPDATE_ASSET_MIX) {
+                    sendMessageToOutput("Enter new asset mix values...");
+                    UnaryOperator<Map<AssetClass, Double>> callback = assetMixValues -> {
+                        for (AssetClass assetClass : AssetClass.values()) {
+                            sendMessageToOutput(String.format("%s: ", assetClass.getName()), false);
+                            String input = scanner.next();
+                            assetMixValues.put(assetClass, Double.parseDouble(input));
+                        }
+                        return assetMixValues;
+                    };
+                    command.setAssetMixCallback(callback);
+
+                }
+                String result = command.run();
                 sendMessageToOutput(result);
             } catch (InvalidCommandArgsException e) {
                 throw new RuntimeException(e);

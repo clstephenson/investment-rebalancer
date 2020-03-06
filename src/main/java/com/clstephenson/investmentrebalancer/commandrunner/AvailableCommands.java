@@ -11,6 +11,7 @@ public enum AvailableCommands {
     ADD_ASSET("add", "add -n [asset name] -p [share price] -s [number of shares]"),
     UPDATE_ASSET ("update", "update -i [asset ID from list] -n [asset name] -p [share price] -s [number of shares]"),
     DELETE_ASSET("delete", "delete -i [asset ID from list]"),
+    UPDATE_ASSET_MIX("updatemix", "updatemix -n [asset name]"),
     BALANCE("balance", ""),
     EXIT_PROGRAM("exit", "exit")
     ;

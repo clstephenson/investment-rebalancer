@@ -1,16 +1,21 @@
 package com.clstephenson.investmentrebalancer.commandrunner.commands;
 
+import com.clstephenson.investmentrebalancer.AssetClass;
 import com.clstephenson.investmentrebalancer.Holdings;
 import com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands;
 import com.clstephenson.investmentrebalancer.commandrunner.CommandOptions;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidCommandArgsException;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidOptionsException;
 
+import java.util.Map;
+import java.util.function.Function;
+
 public abstract class Command {
 
     private AvailableCommands commandType;
     private Holdings holdings;
     private CommandOptions commandOptions;
+    private Function<Map<AssetClass, Double>, Map<AssetClass, Double>> assetMixCallback;
 
     public static Command createCommand(AvailableCommands commandType, Holdings holdings, CommandOptions commandOptions) {
         Command command;
@@ -35,6 +40,9 @@ public abstract class Command {
                 break;
             case BALANCE:
                 command = new BalanceAssets();
+                break;
+            case UPDATE_ASSET_MIX:
+                command = new UpdateAssetMix();
                 break;
             case EXIT_PROGRAM:
                 command = new ExitProgram();
@@ -70,6 +78,14 @@ public abstract class Command {
 
     public void setCommandOptions(CommandOptions commandOptions) {
         this.commandOptions = commandOptions;
+    }
+
+    public Function<Map<AssetClass, Double>, Map<AssetClass, Double>> getAssetMixCallback() {
+        return assetMixCallback;
+    }
+
+    public void setAssetMixCallback(Function<Map<AssetClass, Double>, Map<AssetClass, Double>> assetMixCallback) {
+        this.assetMixCallback = assetMixCallback;
     }
 
     public abstract String run() throws InvalidCommandArgsException, InvalidOptionsException;
