@@ -13,6 +13,10 @@ public class PortfolioRebalancer {
 
     public static void main(String... args) {
 
+        if (System.getenv("INSERT_TEST_DATA") != null) {
+            insertTestData();
+        }
+
         Scanner scanner = new Scanner(System.in);
         scanner.useDelimiter("\n");
 
@@ -23,11 +27,7 @@ public class PortfolioRebalancer {
             String userInput = scanner.next();
 
             try {
-                String result = new CommandBuilder()
-                        .setHoldings(myHoldings)
-                        .setCommandInput(userInput)
-                        .build().orElseThrow(() -> new InvalidCommandException("Could not execute the command."));
-                sendMessageToOutput("");
+                String result = handleCommandInput(userInput);
                 sendMessageToOutput(result);
             } catch (InvalidCommandArgsException e) {
                 throw new RuntimeException(e);
@@ -62,6 +62,26 @@ public class PortfolioRebalancer {
         Arrays.stream(values())
                 .map(AvailableCommands::getCommandLineInstruction)
                 .forEach(PortfolioRebalancer::sendMessageToOutput);
+    }
+
+    private static void insertTestData() {
+        try {
+            sendMessageToOutput(handleCommandInput("add -n ge -p 3.00 -s 50"));
+            sendMessageToOutput(handleCommandInput("add -n ge -p 3.00 -s 1000"));
+            sendMessageToOutput(handleCommandInput("add -n agilent -p 56.00 -s 250"));
+            sendMessageToOutput(handleCommandInput("add -n agilent -p 56.00 -s 100"));
+            sendMessageToOutput(handleCommandInput("holdings"));
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static String handleCommandInput(String userInput) throws
+            InvalidCommandException, InvalidCommandArgsException, InvalidOptionsException {
+        return new CommandBuilder()
+                .setHoldings(myHoldings)
+                .setCommandInput(userInput)
+                .build().orElseThrow(() -> new InvalidCommandException("Could not execute the command."));
     }
 
 }
