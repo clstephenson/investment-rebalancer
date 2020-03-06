@@ -2,14 +2,12 @@ package com.clstephenson.investmentrebalancer.commandrunner.commands;
 
 import com.clstephenson.investmentrebalancer.AssetClass;
 import com.clstephenson.investmentrebalancer.AssetClassCategory;
-import com.clstephenson.investmentrebalancer.Holdings;
-import com.clstephenson.investmentrebalancer.commandrunner.CommandOptions;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidCommandArgsException;
 
 public class ListAssetClasses extends Command {
 
     @Override
-    public String run(Holdings holdings, CommandOptions commandOptions)
+    public String run()
             throws InvalidCommandArgsException {
 
         StringBuilder output = new StringBuilder();

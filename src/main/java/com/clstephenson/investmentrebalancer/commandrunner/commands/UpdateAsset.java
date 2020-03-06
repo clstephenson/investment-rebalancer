@@ -1,9 +1,7 @@
 package com.clstephenson.investmentrebalancer.commandrunner.commands;
 
 import com.clstephenson.investmentrebalancer.Holding;
-import com.clstephenson.investmentrebalancer.Holdings;
 import com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands;
-import com.clstephenson.investmentrebalancer.commandrunner.CommandOptions;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidCommandArgsException;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidOptionsException;
 
@@ -12,37 +10,37 @@ import java.math.BigDecimal;
 public class UpdateAsset extends Command {
 
     @Override
-    public String run(Holdings holdings, CommandOptions commandOptions)
+    public String run()
             throws InvalidCommandArgsException, InvalidOptionsException {
 
-        if (holdings == null) {
+        if (getHoldings() == null) {
             throw new InvalidCommandArgsException("UpdateAsset requires Holdings object to run.");
         }
 
         String syntax = AvailableCommands.UPDATE_ASSET.getSyntaxHelp();
 
-        if (commandOptions == null) {
+        if (getCommandOptions() == null) {
             throw new InvalidOptionsException("Options are required", syntax);
         }
 
         int index = 0;
         try {
             index = Integer.parseInt(
-                    commandOptions.getOptionValue("i")
+                    getCommandOptions().getOptionValue("i")
                             .orElseThrow(() -> new InvalidOptionsException("asset number is required", syntax))
             );
         } catch (NumberFormatException e) {
             throw new InvalidOptionsException("Invalid asset. Use the 'list' command to show available asset numbers.", syntax);
         }
 
-        Holding holdingToUpdate = holdings.getHoldingAtIndex(index)
+        Holding holdingToUpdate = getHoldings().getHoldingAtIndex(index)
                 .orElseThrow(() ->
                         new InvalidOptionsException("Invalid asset. Use the 'list' command to show available asset numbers."));
 
 
-        String assetName = commandOptions.getOptionValue("n").orElse(holdingToUpdate.getAsset().getName());
-        String sharePrice = commandOptions.getOptionValue("p").orElse(holdingToUpdate.getAsset().getPricePerShare().toString());
-        String numberOfShares = commandOptions.getOptionValue("s").orElse(holdingToUpdate.getNumberOfShares().toString());
+        String assetName = getCommandOptions().getOptionValue("n").orElse(holdingToUpdate.getAsset().getName());
+        String sharePrice = getCommandOptions().getOptionValue("p").orElse(holdingToUpdate.getAsset().getPricePerShare().toString());
+        String numberOfShares = getCommandOptions().getOptionValue("s").orElse(holdingToUpdate.getNumberOfShares().toString());
 
         holdingToUpdate.getAsset().setName(assetName);
         holdingToUpdate.getAsset().setPricePerShare(new BigDecimal(sharePrice));

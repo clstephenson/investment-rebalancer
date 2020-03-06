@@ -3,8 +3,6 @@ package com.clstephenson.investmentrebalancer.commandrunner.commands;
 import com.clstephenson.investmentrebalancer.Asset;
 import com.clstephenson.investmentrebalancer.Holding;
 import com.clstephenson.investmentrebalancer.Holdings;
-import com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands;
-import com.clstephenson.investmentrebalancer.commandrunner.CommandOptions;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidCommandArgsException;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidOptionsException;
 
@@ -18,24 +16,23 @@ import static com.clstephenson.investmentrebalancer.commandrunner.AvailableComma
 public class ShowAssetDetails extends Command {
 
     @Override
-    public String run(Holdings holdings, CommandOptions commandOptions)
+    public String run()
             throws InvalidCommandArgsException, InvalidOptionsException {
 
         StringBuilder output = new StringBuilder();
-        String syntax = AvailableCommands.SHOW_ASSET_DETAILS.getSyntaxHelp();
 
-        if (holdings == null) {
+        if (getHoldings() == null) {
             throw new InvalidCommandArgsException("ShowAssetDetails requires Holdings object to run.");
         }
 
-        if (holdings.getHoldings().isEmpty()) {
+        if (getHoldings().getHoldings().isEmpty()) {
             output.append("There are no holdings yet. Use the following command to add one...\n");
             output.append(ADD_ASSET.getSyntaxHelp());
         } else {
-            List<Asset> assets = getAssetsFromHoldings(holdings);
+            List<Asset> assets = getAssetsFromHoldings(getHoldings());
             List<Asset> matchedAssets = new ArrayList<>();
-            if (commandOptions != null) {
-                commandOptions.getOptionValue("n")
+            if (getCommandOptions() != null) {
+                getCommandOptions().getOptionValue("n")
                         .ifPresent(s -> {
                             assets.stream()
                                     .filter(asset -> asset.getName().equalsIgnoreCase(s))
@@ -44,9 +41,9 @@ public class ShowAssetDetails extends Command {
             }
 
             if (matchedAssets.isEmpty()) {
-                output.append(buildOutputString(holdings, assets));
+                output.append(buildOutputString(getHoldings(), assets));
             } else {
-                output.append(buildOutputString(holdings, matchedAssets));
+                output.append(buildOutputString(getHoldings(), matchedAssets));
             }
         }
 

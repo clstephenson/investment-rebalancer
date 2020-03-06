@@ -2,26 +2,25 @@ package com.clstephenson.investmentrebalancer.commandrunner;
 
 import com.clstephenson.investmentrebalancer.Holdings;
 import com.clstephenson.investmentrebalancer.commandrunner.commands.Command;
-import com.clstephenson.investmentrebalancer.commandrunner.commands.Command.ValidCommandArgType;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Optional;
 
 public class CommandBuilder {
 
-    private final Map<ValidCommandArgType, Object> commandArgs;
+    private AvailableCommands commandType;
+    private Holdings holdings;
+    private CommandOptions commandOptions;
 
     public CommandBuilder() {
-        this.commandArgs = new HashMap<>();
+        this.commandType = null;
+        this.holdings = null;
+        this.commandOptions = null;
     }
 
     public CommandBuilder setHoldings(Holdings holdings) {
-        this.commandArgs.put(ValidCommandArgType.HOLDINGS, holdings);
+        this.holdings = holdings;
         return this;
     }
 
-    public CommandBuilder setCommandInput(String commandInput) {
+    public CommandBuilder setCommandInput(String commandInput) throws InvalidCommandException {
         String primaryCommandInput;
         CommandOptions commandOptions = null;
         if (commandInput.contains("-") && commandInput.contains(" ")) {
@@ -30,12 +29,15 @@ public class CommandBuilder {
         } else {
             primaryCommandInput = commandInput.trim();
         }
-        this.commandArgs.put(ValidCommandArgType.PRIMARY_COMMAND_INPUT, primaryCommandInput);
-        this.commandArgs.put(ValidCommandArgType.COMMAND_OPTIONS, commandOptions);
+
+        this.commandType = AvailableCommands.getCommandFromInstruction(primaryCommandInput)
+                .orElseThrow(() -> new InvalidCommandException(primaryCommandInput + " is not a valid command."));
+        this.commandOptions = commandOptions;
         return this;
     }
 
-    public Optional<String> build() throws InvalidCommandArgsException, InvalidOptionsException, InvalidCommandException {
-        return Command.processCommand(commandArgs);
+    public Command buildCommand() {
+        return Command.createCommand(this.commandType, this.holdings, this.commandOptions);
     }
+
 }

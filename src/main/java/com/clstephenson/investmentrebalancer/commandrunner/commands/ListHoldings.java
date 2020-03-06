@@ -10,31 +10,31 @@ import static com.clstephenson.investmentrebalancer.commandrunner.AvailableComma
 public class ListHoldings extends Command {
 
     @Override
-    public String run(Holdings holdings, CommandOptions commandOptions)
+    public String run()
             throws InvalidCommandArgsException {
 
         StringBuilder output = new StringBuilder();
 
-        if (holdings == null) {
+        if (getHoldings() == null) {
             throw new InvalidCommandArgsException("ListHoldings requires Holdings object to run.");
         }
 
-        if (holdings.getHoldings().isEmpty()) {
+        if (getHoldings().getHoldings().isEmpty()) {
             output.append("There are no holdings yet. Use the following command to add one...\n");
             output.append(ADD_ASSET.getSyntaxHelp());
         } else {
             Holdings matchedHoldings = new Holdings();
-            if (commandOptions != null) {
-                commandOptions.getOptionValue("n")
+            if (getCommandOptions() != null) {
+                getCommandOptions().getOptionValue("n")
                         .ifPresent(s -> {
-                            holdings.getHoldings().stream()
+                            getHoldings().getHoldings().stream()
                                     .filter(holding -> holding.getAsset().getName().equalsIgnoreCase(s))
                                     .forEach(matchedHoldings::add);
                         });
             }
 
             if (matchedHoldings.getHoldings().isEmpty()) {
-                output.append(buildOutputString(holdings));
+                output.append(buildOutputString(getHoldings()));
             } else {
                 output.append(buildOutputString(matchedHoldings));
             }

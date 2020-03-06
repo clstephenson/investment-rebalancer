@@ -1,6 +1,7 @@
 package com.clstephenson.investmentrebalancer;
 
 import com.clstephenson.investmentrebalancer.commandrunner.*;
+import com.clstephenson.investmentrebalancer.commandrunner.commands.Command;
 
 import java.util.Arrays;
 import java.util.Scanner;
@@ -78,10 +79,11 @@ public class PortfolioRebalancer {
 
     private static String handleCommandInput(String userInput) throws
             InvalidCommandException, InvalidCommandArgsException, InvalidOptionsException {
-        return new CommandBuilder()
+        Command command = new CommandBuilder()
                 .setHoldings(myHoldings)
                 .setCommandInput(userInput)
-                .build().orElseThrow(() -> new InvalidCommandException("Could not execute the command."));
+                .buildCommand();
+        return command.run();
     }
 
 }
