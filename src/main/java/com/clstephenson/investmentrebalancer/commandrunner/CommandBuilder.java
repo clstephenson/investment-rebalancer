@@ -3,6 +3,8 @@ package com.clstephenson.investmentrebalancer.commandrunner;
 import com.clstephenson.investmentrebalancer.Holdings;
 import com.clstephenson.investmentrebalancer.commandrunner.commands.Command;
 
+import java.util.Optional;
+
 public class CommandBuilder {
 
     private AvailableCommands commandType;
@@ -36,8 +38,8 @@ public class CommandBuilder {
         return this;
     }
 
-    public Command buildCommand() {
-        return Command.createCommand(this.commandType, this.holdings, this.commandOptions);
+    public Optional<Command> buildCommand() {
+        return Optional.of(Command.createCommand(this.commandType, this.holdings, this.commandOptions));
     }
 
 }
