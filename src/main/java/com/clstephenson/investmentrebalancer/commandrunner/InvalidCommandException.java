@@ -1,4 +1,4 @@
-package com.clstephenson.investmentrebalancer.commands;
+package com.clstephenson.investmentrebalancer.commandrunner;
 
 public class InvalidCommandException extends Exception {
 

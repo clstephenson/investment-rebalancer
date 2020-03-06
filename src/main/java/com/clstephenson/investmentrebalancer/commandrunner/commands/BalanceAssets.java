@@ -1,6 +1,8 @@
-package com.clstephenson.investmentrebalancer.commands;
+package com.clstephenson.investmentrebalancer.commandrunner.commands;
 
 import com.clstephenson.investmentrebalancer.Holdings;
+import com.clstephenson.investmentrebalancer.commandrunner.CommandOptions;
+import com.clstephenson.investmentrebalancer.commandrunner.InvalidCommandArgsException;
 
 public class BalanceAssets extends Command {
 

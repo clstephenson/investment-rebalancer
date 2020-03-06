@@ -1,6 +1,7 @@
-package com.clstephenson.investmentrebalancer.commands;
+package com.clstephenson.investmentrebalancer.commandrunner.commands;
 
 import com.clstephenson.investmentrebalancer.Holdings;
+import com.clstephenson.investmentrebalancer.commandrunner.*;
 
 import java.util.Map;
 import java.util.Optional;
@@ -97,7 +98,7 @@ public abstract class Command {
     public abstract String run(Holdings holdings, CommandOptions commandOptions)
             throws InvalidCommandArgsException, InvalidOptionsException;
 
-    enum ValidCommandArgType {
+    public enum ValidCommandArgType {
         HOLDINGS,
         PRIMARY_COMMAND_INPUT,
         COMMAND_OPTIONS

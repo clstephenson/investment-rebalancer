@@ -1,7 +1,8 @@
-package com.clstephenson.investmentrebalancer.commands;
+package com.clstephenson.investmentrebalancer.commandrunner;
 
 import com.clstephenson.investmentrebalancer.Holdings;
-import com.clstephenson.investmentrebalancer.commands.Command.ValidCommandArgType;
+import com.clstephenson.investmentrebalancer.commandrunner.commands.Command;
+import com.clstephenson.investmentrebalancer.commandrunner.commands.Command.ValidCommandArgType;
 
 import java.util.HashMap;
 import java.util.Map;
