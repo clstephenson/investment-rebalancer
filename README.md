@@ -34,6 +34,11 @@ delete -i [asset number from list]
 ```    
 update -i [asset ID from list] -n [asset name] -p [share price] -s [number of shares]
 ```    
+### Update the asset class mix for an asset
+Enter the percentage for each asset class when prompted. The asset name option is required and must match an asset in holdings. Percentages must be between 0 and 100, while the total sum of percentages across classes must equal 100%.
+```
+updatemix -n [asset name]
+```
 ### Show re-balance results.
 ```
 balance
