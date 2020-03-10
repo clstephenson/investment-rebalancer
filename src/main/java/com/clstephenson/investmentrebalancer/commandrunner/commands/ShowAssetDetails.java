@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands.ADD_ASSET;
+import static com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands.SHOW_ASSET_DETAILS;
 
 public class ShowAssetDetails extends Command {
 
@@ -31,13 +32,14 @@ public class ShowAssetDetails extends Command {
         } else {
             List<Asset> assets = getAssetsFromHoldings(getHoldings());
             List<Asset> matchedAssets = new ArrayList<>();
+
             if (getCommandOptions() != null) {
-                getCommandOptions().getOptionValue("n")
-                        .ifPresent(s -> {
-                            assets.stream()
-                                    .filter(asset -> asset.getName().equalsIgnoreCase(s))
-                                    .forEach(matchedAssets::add);
-                        });
+                String assetName = getCommandOptions().getOptionValue("n")
+                        .orElseThrow(() -> new InvalidOptionsException("asset name missing", SHOW_ASSET_DETAILS.getSyntaxHelp()));
+
+                assets.stream()
+                        .filter(asset -> asset.getName().equalsIgnoreCase(assetName))
+                        .forEach(matchedAssets::add);
             }
 
             if (matchedAssets.isEmpty()) {
