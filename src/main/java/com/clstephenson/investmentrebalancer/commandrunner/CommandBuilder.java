@@ -6,7 +6,6 @@ import com.clstephenson.investmentrebalancer.commandrunner.commands.Command;
 
 import java.util.Map;
 import java.util.Optional;
-import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
 public class CommandBuilder {

@@ -1,21 +1,16 @@
 package com.clstephenson.investmentrebalancer.commandrunner.commands;
 
 import com.clstephenson.investmentrebalancer.Asset;
-import com.clstephenson.investmentrebalancer.AssetClass;
-import com.clstephenson.investmentrebalancer.AssetClassCategory;
-import com.clstephenson.investmentrebalancer.Holding;
+import com.clstephenson.investmentrebalancer.AssetMix;
 import com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands;
+import com.clstephenson.investmentrebalancer.commandrunner.InvalidAssetMixPercentageValue;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidCommandArgsException;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidOptionsException;
-
-import java.math.BigDecimal;
-import java.util.HashMap;
-import java.util.Map;
 
 public class UpdateAssetMix extends Command {
 
     @Override
-    public String run() throws InvalidCommandArgsException, InvalidOptionsException {
+    public String run() throws InvalidCommandArgsException, InvalidOptionsException, InvalidAssetMixPercentageValue {
 
         StringBuilder output = new StringBuilder();
 
@@ -34,21 +29,14 @@ public class UpdateAssetMix extends Command {
         Asset asset = getHoldings().getAssetFromHoldings(assetName)
                 .orElseThrow(() -> new InvalidOptionsException("Invalid asset", syntax));
 
-        Map<AssetClass, Double> mix = new HashMap<>();
+        AssetMix mix = new AssetMix();
         getAssetMixCallback().apply(mix);
-
-        for (AssetClass assetClass : AssetClass.values()) {
-            double currentPercentage = asset.getAssetMix().getMixPercentageFor(assetClass);
-            asset.getAssetMix().updatePercentageFor(
-                    assetClass,
-                    mix.getOrDefault(assetClass, currentPercentage)
-            );
-            //todo: need to catch numberformatexception for out of range values
-        }
+        asset.setAssetMix(mix);
 
         output.append("Updated asset mix for ")
                 .append(assetName);
 
         return output.toString();
     }
+
 }

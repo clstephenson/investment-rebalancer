@@ -34,16 +34,15 @@ public class PortfolioRebalancer {
                 Command command = getCommandFromInput(userInput);
                 if (command.getCommandType() == AvailableCommands.UPDATE_ASSET_MIX) {
                     sendMessageToOutput("Enter new asset mix values...");
-                    UnaryOperator<Map<AssetClass, Double>> callback = assetMixValues -> {
+                    UnaryOperator<AssetMix> callback = assetMixValues -> {
                         for (AssetClass assetClass : AssetClass.values()) {
                             sendMessageToOutput(String.format("%s: ", assetClass.getName()), false);
                             String input = scanner.next();
-                            assetMixValues.put(assetClass, Double.parseDouble(input));
+                            assetMixValues.getMixItems().put(assetClass, Double.parseDouble(input));
                         }
                         return assetMixValues;
                     };
                     command.setAssetMixCallback(callback);
-
                 }
                 String result = command.run();
                 sendMessageToOutput(result);
@@ -55,6 +54,8 @@ public class PortfolioRebalancer {
             } catch (InvalidOptionsException e) {
                 sendMessageToOutput(e.getMessage());
                 sendMessageToOutput(String.format("Command Syntax:%n%s", e.getCommandSyntax()));
+            } catch (InvalidAssetMixPercentageValue e) {
+                sendMessageToOutput("The asset mix was NOT updated!\nEach asset class percentage must be between 0% and 100%, and the total mix should add up to 100%.");
             }
         }
     }

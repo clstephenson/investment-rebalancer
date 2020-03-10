@@ -1,5 +1,7 @@
 package com.clstephenson.investmentrebalancer;
 
+import com.clstephenson.investmentrebalancer.commandrunner.InvalidAssetMixPercentageValue;
+
 import java.math.BigDecimal;
 import java.util.Objects;
 import java.util.UUID;
@@ -54,6 +56,12 @@ public class Asset {
 
     public AssetMix getAssetMix() {
         return assetMix;
+    }
+
+    public void setAssetMix(AssetMix assetMix) throws InvalidAssetMixPercentageValue {
+        if (assetMix.isValid()) {
+            this.assetMix = assetMix;
+        }
     }
 
     @Override

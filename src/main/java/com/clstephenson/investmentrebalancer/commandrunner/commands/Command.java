@@ -1,21 +1,17 @@
 package com.clstephenson.investmentrebalancer.commandrunner.commands;
 
-import com.clstephenson.investmentrebalancer.AssetClass;
+import com.clstephenson.investmentrebalancer.AssetMix;
 import com.clstephenson.investmentrebalancer.Holdings;
-import com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands;
-import com.clstephenson.investmentrebalancer.commandrunner.CommandOptions;
-import com.clstephenson.investmentrebalancer.commandrunner.InvalidCommandArgsException;
-import com.clstephenson.investmentrebalancer.commandrunner.InvalidOptionsException;
+import com.clstephenson.investmentrebalancer.commandrunner.*;
 
-import java.util.Map;
-import java.util.function.Function;
+import java.util.function.UnaryOperator;
 
 public abstract class Command {
 
     private AvailableCommands commandType;
     private Holdings holdings;
     private CommandOptions commandOptions;
-    private Function<Map<AssetClass, Double>, Map<AssetClass, Double>> assetMixCallback;
+    private UnaryOperator<AssetMix> assetMixCallback;
 
     public static Command createCommand(AvailableCommands commandType, Holdings holdings, CommandOptions commandOptions) {
         Command command;
@@ -80,14 +76,14 @@ public abstract class Command {
         this.commandOptions = commandOptions;
     }
 
-    public Function<Map<AssetClass, Double>, Map<AssetClass, Double>> getAssetMixCallback() {
+    public UnaryOperator<AssetMix> getAssetMixCallback() {
         return assetMixCallback;
     }
 
-    public void setAssetMixCallback(Function<Map<AssetClass, Double>, Map<AssetClass, Double>> assetMixCallback) {
+    public void setAssetMixCallback(UnaryOperator<AssetMix> assetMixCallback) {
         this.assetMixCallback = assetMixCallback;
     }
 
-    public abstract String run() throws InvalidCommandArgsException, InvalidOptionsException;
+    public abstract String run() throws InvalidCommandArgsException, InvalidOptionsException, InvalidAssetMixPercentageValue;
 
 }
