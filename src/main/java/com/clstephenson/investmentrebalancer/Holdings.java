@@ -72,7 +72,7 @@ public class Holdings {
     public AssetMix getCumulativeAssetMix() throws InvalidAssetMixPercentageValue {
         AssetMix mix = new AssetMix();
         BigDecimal totalValue = getTotalValueOfHoldings();
-        Map<AssetClass, BigDecimal> valuesByAssetClass = getValuesByAssetClass();
+        Map<AssetClass, BigDecimal> valuesByAssetClass = getCurrentValuations();
 
         for (AssetClass assetClass : AssetClass.values()) {
             double percentage = valuesByAssetClass.get(assetClass)
@@ -85,7 +85,7 @@ public class Holdings {
         return mix;
     }
 
-    private Map<AssetClass, BigDecimal> getValuesByAssetClass() {
+    public Map<AssetClass, BigDecimal> getCurrentValuations() {
         Map<AssetClass, BigDecimal> valuesByAssetClass = new HashMap<>();
         for (Holding holding : this.holdings) {
             Arrays.stream(AssetClass.values()).forEach(assetClass ->

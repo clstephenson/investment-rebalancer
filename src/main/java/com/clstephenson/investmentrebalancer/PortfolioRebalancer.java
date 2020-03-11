@@ -24,14 +24,12 @@ public class PortfolioRebalancer {
         scanner.useDelimiter("\n");
 
         while (true) {
-
             printPrompt();
-
             String userInput = scanner.next();
 
             try {
                 Command command = getCommandFromInput(userInput);
-                if (command.getCommandType() == AvailableCommands.UPDATE_ASSET_MIX || command.getCommandType() == UPDATE_TARGET_ASSET_MIX) {
+                if (command.getCommandType() == UPDATE_ASSET_MIX || command.getCommandType() == UPDATE_TARGET_ASSET_MIX) {
                     UnaryOperator<AssetMix> callback = assetMixValues -> {
                         sendMessageToOutput("Enter new asset mix values...");
                         for (AssetClass assetClass : AssetClass.values()) {
@@ -87,10 +85,15 @@ public class PortfolioRebalancer {
         try {
             sendMessageToOutput(getCommandFromInput("add -n ge -p 3.00 -s 50").run());
             sendMessageToOutput(getCommandFromInput("add -n ge -p 3.00 -s 1000").run());
+            myHoldings.getAssetFromHoldings("ge").get().getAssetMix().updatePercentageFor(AssetClass.US_STOCKS, 100d);
             sendMessageToOutput(getCommandFromInput("add -n agilent -p 56.00 -s 250").run());
             sendMessageToOutput(getCommandFromInput("add -n agilent -p 56.00 -s 100").run());
+            myHoldings.getAssetFromHoldings("agilent").get().getAssetMix().updatePercentageFor(AssetClass.US_BONDS, 100d);
             sendMessageToOutput(getCommandFromInput("holdings").run());
             sendMessageToOutput(getCommandFromInput("assets -n ge").run());
+            targetMix.getAssetMix().updatePercentageFor(AssetClass.US_STOCKS, 60d);
+            targetMix.getAssetMix().updatePercentageFor(AssetClass.US_BONDS, 40d);
+            sendMessageToOutput(getCommandFromInput("balance").run());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
