@@ -13,7 +13,7 @@ public class UpdateTargetAssetMix extends Command {
         AssetMix mix = new AssetMix();
         getAssetMixCallback().apply(mix);
         if (mix.isValid()) {
-            getTargetMix().setAssetMix(mix);
+            getContext().getTargetMix().setAssetMix(mix);
             output.append("Updated target asset mix.");
         }
 

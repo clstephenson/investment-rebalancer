@@ -14,7 +14,7 @@ public class UpdateAssetMix extends Command {
 
         StringBuilder output = new StringBuilder();
 
-        if (getHoldings() == null) {
+        if (getContext().getHoldings() == null) {
             throw new InvalidCommandArgsException("UpdateMix requires Holdings object to run.");
         }
 
@@ -26,7 +26,7 @@ public class UpdateAssetMix extends Command {
 
         String assetName = getCommandOptions().getOptionValue("n")
                 .orElseThrow(() -> new InvalidOptionsException("asset name is required", syntax));
-        Asset asset = getHoldings().getAssetFromHoldings(assetName)
+        Asset asset = getContext().getHoldings().getAssetFromHoldings(assetName)
                 .orElseThrow(() -> new InvalidOptionsException("Invalid asset", syntax));
 
         AssetMix mix = new AssetMix();

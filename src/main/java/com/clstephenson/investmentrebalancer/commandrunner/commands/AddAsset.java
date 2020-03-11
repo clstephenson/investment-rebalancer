@@ -43,13 +43,13 @@ public class AddAsset extends Command {
             throw new InvalidOptionsException(message, syntax);
         }
 
-        Optional<Asset> optionalAsset = getHoldings().getAssetFromHoldings(assetName);
+        Optional<Asset> optionalAsset = getContext().getHoldings().getAssetFromHoldings(assetName);
         Asset asset = optionalAsset.orElseGet(
                 () -> new Asset(assetName, new BigDecimal(sharePrice))
         );
         asset.setPricePerShare(new BigDecimal(sharePrice));
         Holding newHolding = new Holding(asset, new BigDecimal(numberOfShares));
-        getHoldings().add(newHolding);
+        getContext().getHoldings().add(newHolding);
         return String.format("%s\nNote: Existing holdings with asset=%s were updated to reflect a price of %s per share.",
                 newHolding.toString(), asset.getName(), asset.getPricePerShare().toString());
     }

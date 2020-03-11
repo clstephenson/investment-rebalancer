@@ -16,16 +16,16 @@ public class BalanceAssets extends Command {
 
         StringBuilder output = new StringBuilder();
 
-        if (getHoldings() == null) {
+        if (getContext().getHoldings() == null) {
             throw new InvalidCommandArgsException("balance requires Holdings object to run.");
         }
 
-        if (getHoldings().getHoldings().isEmpty()) {
+        if (getContext().getHoldings().getHoldings().isEmpty()) {
             output.append("There are no assets yet. Add an asset using the following command...\n");
             output.append(AvailableCommands.ADD_ASSET.getSyntaxHelp());
         } else {
-            Map<AssetClass, BigDecimal> currentValuations = getHoldings().getCurrentValuations();
-            Map<AssetClass, BigDecimal> targetValuations = getTargetMix().getTargetValuations(getHoldings());
+            Map<AssetClass, BigDecimal> currentValuations = getContext().getHoldings().getCurrentValuations();
+            Map<AssetClass, BigDecimal> targetValuations = getContext().getTargetMix().getTargetValuations(getContext().getHoldings());
 
             final String HEADER_CLASS = "Asset Class";
             final String HEADER_TARGET = "Target Value";

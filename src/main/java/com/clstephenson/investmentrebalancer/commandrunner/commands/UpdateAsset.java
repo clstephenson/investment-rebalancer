@@ -13,7 +13,7 @@ public class UpdateAsset extends Command {
     public String run()
             throws InvalidCommandArgsException, InvalidOptionsException {
 
-        if (getHoldings() == null) {
+        if (getContext().getHoldings() == null) {
             throw new InvalidCommandArgsException("UpdateAsset requires Holdings object to run.");
         }
 
@@ -33,7 +33,7 @@ public class UpdateAsset extends Command {
             throw new InvalidOptionsException("Invalid asset. Use the 'list' command to show available asset numbers.", syntax);
         }
 
-        Holding holdingToUpdate = getHoldings().getHoldingAtIndex(index)
+        Holding holdingToUpdate = getContext().getHoldings().getHoldingAtIndex(index)
                 .orElseThrow(() ->
                         new InvalidOptionsException("Invalid asset. Use the 'list' command to show available asset numbers."));
 

@@ -5,7 +5,7 @@ public class ShowTargetAssetMix extends Command {
     @Override
     public String run() {
 
-        return getTargetMix().getAssetMix().toString();
+        return getContext().getTargetMix().getAssetMix().toString();
 
     }
 

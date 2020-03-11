@@ -7,6 +7,7 @@ public class ExitProgram extends Command {
     @Override
     public String run()
             throws InvalidCommandArgsException {
+
         System.exit(0);
         return "";
     }

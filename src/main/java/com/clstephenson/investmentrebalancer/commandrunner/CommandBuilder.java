@@ -1,8 +1,7 @@
 package com.clstephenson.investmentrebalancer.commandrunner;
 
 import com.clstephenson.investmentrebalancer.AssetClass;
-import com.clstephenson.investmentrebalancer.TargetMix;
-import com.clstephenson.investmentrebalancer.Holdings;
+import com.clstephenson.investmentrebalancer.Context;
 import com.clstephenson.investmentrebalancer.commandrunner.commands.Command;
 
 import java.util.Map;
@@ -11,27 +10,14 @@ import java.util.function.UnaryOperator;
 
 public class CommandBuilder {
 
+    private Context context;
     private AvailableCommands commandType;
-    private TargetMix target;
-    private Holdings holdings;
     private CommandOptions commandOptions;
     private UnaryOperator<Map<AssetClass, Double>> assetMixCallback;
 
     public CommandBuilder() {
         this.commandType = null;
-        this.target = null;
-        this.holdings = null;
         this.commandOptions = null;
-    }
-
-    public CommandBuilder setHoldings(Holdings holdings) {
-        this.holdings = holdings;
-        return this;
-    }
-
-    public CommandBuilder setTargetAssetMix(TargetMix target) {
-        this.target = target;
-        return this;
     }
 
     public CommandBuilder setCommandInput(String commandInput) throws InvalidCommandException {
@@ -55,8 +41,13 @@ public class CommandBuilder {
         return this;
     }
 
+    public CommandBuilder setContext(Context context) {
+        this.context = context;
+        return this;
+    }
+
     public Optional<Command> buildCommand() {
-        return Optional.of(Command.createCommand(this.commandType, this.holdings, this.commandOptions, this.target));
+        return Optional.of(Command.createCommand(this.context, this.commandType, this.commandOptions));
     }
 
 }

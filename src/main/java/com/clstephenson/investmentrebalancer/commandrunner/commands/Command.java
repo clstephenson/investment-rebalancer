@@ -1,8 +1,7 @@
 package com.clstephenson.investmentrebalancer.commandrunner.commands;
 
 import com.clstephenson.investmentrebalancer.AssetMix;
-import com.clstephenson.investmentrebalancer.TargetMix;
-import com.clstephenson.investmentrebalancer.Holdings;
+import com.clstephenson.investmentrebalancer.Context;
 import com.clstephenson.investmentrebalancer.commandrunner.*;
 
 import java.util.function.UnaryOperator;
@@ -10,12 +9,11 @@ import java.util.function.UnaryOperator;
 public abstract class Command {
 
     private AvailableCommands commandType;
-    private TargetMix targetMix;
-    private Holdings holdings;
+    private Context context;
     private CommandOptions commandOptions;
     private UnaryOperator<AssetMix> assetMixCallback;
 
-    public static Command createCommand(AvailableCommands commandType, Holdings holdings, CommandOptions commandOptions, TargetMix target) {
+    public static Command createCommand(Context context, AvailableCommands commandType, CommandOptions commandOptions) {
         Command command;
         switch (commandType) {
             case LIST_HOLDINGS:
@@ -54,39 +52,30 @@ public abstract class Command {
             default:
                 command = null;
         }
+        command.setContext(context);
         command.setCommandType(commandType);
-        command.setTargetMix(target);
-        command.setHoldings(holdings);
         command.setCommandOptions(commandOptions);
         return command;
+    }
+
+    public Context getContext() {
+        return context;
     }
 
     public AvailableCommands getCommandType() {
         return commandType;
     }
 
-    public TargetMix getTargetMix() {
-        return targetMix;
-    }
-
-    public Holdings getHoldings() {
-        return holdings;
-    }
-
     public CommandOptions getCommandOptions() {
         return commandOptions;
     }
 
+    public void setContext(Context context) {
+        this.context = context;
+    }
+
     public void setCommandType(AvailableCommands commandType) {
         this.commandType = commandType;
-    }
-
-    public void setTargetMix(TargetMix targetMix) {
-        this.targetMix = targetMix;
-    }
-
-    public void setHoldings(Holdings holdings) {
-        this.holdings = holdings;
     }
 
     public void setCommandOptions(CommandOptions commandOptions) {

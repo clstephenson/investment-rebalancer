@@ -22,15 +22,15 @@ public class ShowAssetDetails extends Command {
 
         StringBuilder output = new StringBuilder();
 
-        if (getHoldings() == null) {
+        if (getContext().getHoldings() == null) {
             throw new InvalidCommandArgsException("ShowAssetDetails requires Holdings object to run.");
         }
 
-        if (getHoldings().getHoldings().isEmpty()) {
+        if (getContext().getHoldings().getHoldings().isEmpty()) {
             output.append("There are no holdings yet. Use the following command to add one...\n");
             output.append(ADD_ASSET.getSyntaxHelp());
         } else {
-            List<Asset> assets = getAssetsFromHoldings(getHoldings());
+            List<Asset> assets = getAssetsFromHoldings(getContext().getHoldings());
             List<Asset> matchedAssets = new ArrayList<>();
 
             if (getCommandOptions() != null) {
@@ -43,9 +43,9 @@ public class ShowAssetDetails extends Command {
             }
 
             if (matchedAssets.isEmpty()) {
-                output.append(buildOutputString(getHoldings(), assets));
+                output.append(buildOutputString(getContext().getHoldings(), assets));
             } else {
-                output.append(buildOutputString(getHoldings(), matchedAssets));
+                output.append(buildOutputString(getContext().getHoldings(), matchedAssets));
             }
         }
 

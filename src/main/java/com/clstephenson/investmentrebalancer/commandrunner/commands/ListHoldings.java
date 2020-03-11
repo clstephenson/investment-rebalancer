@@ -15,11 +15,11 @@ public class ListHoldings extends Command {
 
         StringBuilder output = new StringBuilder();
 
-        if (getHoldings() == null) {
+        if (getContext().getHoldings() == null) {
             throw new InvalidCommandArgsException("ListHoldings requires Holdings object to run.");
         }
 
-        if (getHoldings().getHoldings().isEmpty()) {
+        if (getContext().getHoldings().getHoldings().isEmpty()) {
             output.append("There are no holdings yet. Use the following command to add one...\n");
             output.append(ADD_ASSET.getSyntaxHelp());
         } else {
@@ -27,15 +27,15 @@ public class ListHoldings extends Command {
             if (getCommandOptions() != null) {
                 getCommandOptions().getOptionValue("n")
                         .ifPresent(s -> {
-                            getHoldings().getHoldings().stream()
+                            getContext().getHoldings().getHoldings().stream()
                                     .filter(holding -> holding.getAsset().getName().equalsIgnoreCase(s))
                                     .forEach(matchedHoldings::add);
                         });
             }
 
             if (matchedHoldings.getHoldings().isEmpty()) {
-                output.append(buildOutputString(getHoldings()));
-                output.append(getHoldings().getCumulativeAssetMix().toString());
+                output.append(buildOutputString(getContext().getHoldings()));
+                output.append(getContext().getHoldings().getCumulativeAssetMix().toString());
             } else {
                 output.append(buildOutputString(matchedHoldings));
             }

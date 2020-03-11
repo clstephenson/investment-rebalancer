@@ -11,7 +11,7 @@ public class DeleteAsset extends Command {
     public String run()
             throws InvalidCommandArgsException, InvalidOptionsException {
 
-        if (getHoldings() == null) {
+        if (getContext().getHoldings() == null) {
             throw new InvalidCommandArgsException("DeleteAsset requires Holdings object to run.");
         }
 
@@ -31,11 +31,11 @@ public class DeleteAsset extends Command {
             throw new InvalidOptionsException("Invalid asset. Use the 'list' command to show available asset numbers.");
         }
 
-        Holding holdingToDelete = getHoldings().getHoldingAtIndex(index)
+        Holding holdingToDelete = getContext().getHoldings().getHoldingAtIndex(index)
                 .orElseThrow(() ->
                         new InvalidOptionsException("Asset option must be a number. Use the 'list' command to show available asset numbers."));
 
-        return getHoldings().deleteHolding(holdingToDelete) ?
+        return getContext().getHoldings().deleteHolding(holdingToDelete) ?
                 String.format(
                         "%s asset with %s shares deleted.",
                         holdingToDelete.getAsset().getName(),

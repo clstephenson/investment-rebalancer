@@ -11,13 +11,11 @@ import static com.clstephenson.investmentrebalancer.commandrunner.AvailableComma
 
 public class PortfolioRebalancer {
 
-    private static Holdings myHoldings = new Holdings();
-    private static TargetMix targetMix = new TargetMix();
-
     public static void main(String... args) {
+        Context context = Context.getContext();
 
         if (System.getenv("INSERT_TEST_DATA") != null) {
-            insertTestData();
+            insertTestData(context);
         }
 
         Scanner scanner = new Scanner(System.in);
@@ -28,7 +26,7 @@ public class PortfolioRebalancer {
             String userInput = scanner.next();
 
             try {
-                Command command = getCommandFromInput(userInput);
+                Command command = getCommandFromInput(userInput, context);
                 if (command.getCommandType() == UPDATE_ASSET_MIX || command.getCommandType() == UPDATE_TARGET_ASSET_MIX) {
                     UnaryOperator<AssetMix> callback = assetMixValues -> {
                         sendMessageToOutput("Enter new asset mix values...");
@@ -81,29 +79,28 @@ public class PortfolioRebalancer {
                 .forEach(PortfolioRebalancer::sendMessageToOutput);
     }
 
-    private static void insertTestData() {
+    private static void insertTestData(Context context) {
         try {
-            sendMessageToOutput(getCommandFromInput("add -n ge -p 3.00 -s 50").run());
-            sendMessageToOutput(getCommandFromInput("add -n ge -p 3.00 -s 1000").run());
-            myHoldings.getAssetFromHoldings("ge").get().getAssetMix().updatePercentageFor(AssetClass.US_STOCKS, 100d);
-            sendMessageToOutput(getCommandFromInput("add -n agilent -p 56.00 -s 250").run());
-            sendMessageToOutput(getCommandFromInput("add -n agilent -p 56.00 -s 100").run());
-            myHoldings.getAssetFromHoldings("agilent").get().getAssetMix().updatePercentageFor(AssetClass.US_BONDS, 100d);
-            sendMessageToOutput(getCommandFromInput("holdings").run());
-            sendMessageToOutput(getCommandFromInput("assets -n ge").run());
-            targetMix.getAssetMix().updatePercentageFor(AssetClass.US_STOCKS, 60d);
-            targetMix.getAssetMix().updatePercentageFor(AssetClass.US_BONDS, 40d);
-            sendMessageToOutput(getCommandFromInput("balance").run());
+            sendMessageToOutput(getCommandFromInput("add -n ge -p 3.00 -s 50", context).run());
+            sendMessageToOutput(getCommandFromInput("add -n ge -p 3.00 -s 1000", context).run());
+            context.getHoldings().getAssetFromHoldings("ge").get().getAssetMix().updatePercentageFor(AssetClass.US_STOCKS, 100d);
+            sendMessageToOutput(getCommandFromInput("add -n agilent -p 56.00 -s 250", context).run());
+            sendMessageToOutput(getCommandFromInput("add -n agilent -p 56.00 -s 100", context).run());
+            context.getHoldings().getAssetFromHoldings("agilent").get().getAssetMix().updatePercentageFor(AssetClass.US_BONDS, 100d);
+            sendMessageToOutput(getCommandFromInput("holdings", context).run());
+            sendMessageToOutput(getCommandFromInput("assets -n ge", context).run());
+            context.getTargetMix().getAssetMix().updatePercentageFor(AssetClass.US_STOCKS, 60d);
+            context.getTargetMix().getAssetMix().updatePercentageFor(AssetClass.US_BONDS, 40d);
+            sendMessageToOutput(getCommandFromInput("balance", context).run());
         } catch (Exception e) {
             throw new RuntimeException(e);
         }
     }
 
-    private static Command getCommandFromInput(String userInput) throws InvalidCommandException {
+    private static Command getCommandFromInput(String userInput, Context context) throws InvalidCommandException {
         return new CommandBuilder()
-                .setHoldings(myHoldings)
+                .setContext(context)
                 .setCommandInput(userInput)
-                .setTargetAssetMix(targetMix)
                 .buildCommand().orElseThrow(() -> new InvalidCommandException("Invalid Command"));
     }
 
