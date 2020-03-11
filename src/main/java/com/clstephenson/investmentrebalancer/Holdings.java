@@ -1,10 +1,10 @@
 package com.clstephenson.investmentrebalancer;
 
+import com.clstephenson.investmentrebalancer.commandrunner.InvalidAssetMixPercentageValue;
+
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
-import java.util.Optional;
+import java.math.RoundingMode;
+import java.util.*;
 
 public class Holdings {
 
@@ -67,5 +67,31 @@ public class Holdings {
         return "Holdings{" +
                 "holdings=" + holdings +
                 '}';
+    }
+
+    public AssetMix getCumulativeAssetMix() throws InvalidAssetMixPercentageValue {
+        AssetMix mix = new AssetMix();
+        BigDecimal totalValue = getTotalValueOfHoldings();
+        Map<AssetClass, BigDecimal> valuesByAssetClass = getValuesByAssetClass();
+
+        for (AssetClass assetClass : AssetClass.values()) {
+            double percentage = valuesByAssetClass.get(assetClass)
+                    .divide(totalValue, RoundingMode.HALF_UP)
+                    .multiply(BigDecimal.valueOf(100d))
+                    .setScale(2, RoundingMode.HALF_UP)
+                    .doubleValue();
+            mix.updatePercentageFor(assetClass, percentage);
+        }
+        return mix;
+    }
+
+    private Map<AssetClass, BigDecimal> getValuesByAssetClass() {
+        Map<AssetClass, BigDecimal> valuesByAssetClass = new HashMap<>();
+        for (Holding holding : this.holdings) {
+            Arrays.stream(AssetClass.values()).forEach(assetClass ->
+                    valuesByAssetClass.merge(assetClass, holding.getValue(assetClass), BigDecimal::add)
+            );
+        }
+        return valuesByAssetClass;
     }
 }

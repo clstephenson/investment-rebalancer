@@ -5,6 +5,7 @@ import com.clstephenson.investmentrebalancer.commandrunner.InvalidAssetMixPercen
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Map;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 public class AssetMix {
@@ -52,6 +53,19 @@ public class AssetMix {
             throw new InvalidAssetMixPercentageValue("Percentage must be between 0 and 100%");
         }
         return true;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AssetMix mix = (AssetMix) o;
+        return mixItems.equals(mix.mixItems);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mixItems);
     }
 
     @Override

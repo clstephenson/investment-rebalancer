@@ -37,7 +37,8 @@ public class PortfolioRebalancer {
                         for (AssetClass assetClass : AssetClass.values()) {
                             sendMessageToOutput(String.format("%s: ", assetClass.getName()), false);
                             String input = scanner.next();
-                            assetMixValues.getMixItems().put(assetClass, Double.parseDouble(input));
+                            double percentValue = input.isEmpty() ? 0.0 : Double.parseDouble(input);
+                            assetMixValues.getMixItems().put(assetClass, percentValue);
                         }
                         return assetMixValues;
                     };

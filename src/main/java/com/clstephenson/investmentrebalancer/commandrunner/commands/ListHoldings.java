@@ -2,7 +2,7 @@ package com.clstephenson.investmentrebalancer.commandrunner.commands;
 
 import com.clstephenson.investmentrebalancer.Holding;
 import com.clstephenson.investmentrebalancer.Holdings;
-import com.clstephenson.investmentrebalancer.commandrunner.CommandOptions;
+import com.clstephenson.investmentrebalancer.commandrunner.InvalidAssetMixPercentageValue;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidCommandArgsException;
 
 import static com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands.ADD_ASSET;
@@ -11,7 +11,7 @@ public class ListHoldings extends Command {
 
     @Override
     public String run()
-            throws InvalidCommandArgsException {
+            throws InvalidCommandArgsException, InvalidAssetMixPercentageValue {
 
         StringBuilder output = new StringBuilder();
 
@@ -35,6 +35,7 @@ public class ListHoldings extends Command {
 
             if (matchedHoldings.getHoldings().isEmpty()) {
                 output.append(buildOutputString(getHoldings()));
+                output.append(getHoldings().getCumulativeAssetMix().toString());
             } else {
                 output.append(buildOutputString(matchedHoldings));
             }

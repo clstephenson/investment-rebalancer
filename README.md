@@ -8,7 +8,7 @@ to use this as a personal project to turn it into a Java application.
 
 ### Show a list of the asset holdings.
 The asset name is optional and will filter the results. If command is issued without any options, all holdings will 
-be listed.
+be listed, along with the actual asset mix across all holdings.
 ```
 holdings
 holdings -n [asset name]

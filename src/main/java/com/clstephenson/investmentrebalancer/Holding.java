@@ -21,10 +21,20 @@ public class Holding {
         return asset;
     }
 
-    public BigDecimal getValue() {
+    private BigDecimal calculateValue(double percentage) {
         return asset.getPricePerShare()
                 .multiply(numberOfShares)
+                .multiply(BigDecimal.valueOf(percentage / 100))
                 .setScale(2, RoundingMode.HALF_UP);
+    }
+
+    public BigDecimal getValue() {
+        return calculateValue(100d);
+    }
+
+    public BigDecimal getValue(AssetClass assetClass) {
+        double percentage = this.asset.getAssetMix().getMixPercentageFor(assetClass);
+        return calculateValue(percentage);
     }
 
     public BigDecimal getNumberOfShares() {
