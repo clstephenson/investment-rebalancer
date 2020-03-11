@@ -4,16 +4,15 @@ import com.clstephenson.investmentrebalancer.commandrunner.*;
 import com.clstephenson.investmentrebalancer.commandrunner.commands.Command;
 
 import java.util.Arrays;
-import java.util.Map;
 import java.util.Scanner;
-import java.util.function.Function;
 import java.util.function.UnaryOperator;
 
-import static com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands.values;
+import static com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands.*;
 
 public class PortfolioRebalancer {
 
     private static Holdings myHoldings = new Holdings();
+    private static TargetMix targetMix = new TargetMix();
 
     public static void main(String... args) {
 
@@ -32,9 +31,9 @@ public class PortfolioRebalancer {
 
             try {
                 Command command = getCommandFromInput(userInput);
-                if (command.getCommandType() == AvailableCommands.UPDATE_ASSET_MIX) {
-                    sendMessageToOutput("Enter new asset mix values...");
+                if (command.getCommandType() == AvailableCommands.UPDATE_ASSET_MIX || command.getCommandType() == UPDATE_TARGET_ASSET_MIX) {
                     UnaryOperator<AssetMix> callback = assetMixValues -> {
+                        sendMessageToOutput("Enter new asset mix values...");
                         for (AssetClass assetClass : AssetClass.values()) {
                             sendMessageToOutput(String.format("%s: ", assetClass.getName()), false);
                             String input = scanner.next();
@@ -100,6 +99,7 @@ public class PortfolioRebalancer {
         return new CommandBuilder()
                 .setHoldings(myHoldings)
                 .setCommandInput(userInput)
+                .setTargetAssetMix(targetMix)
                 .buildCommand().orElseThrow(() -> new InvalidCommandException("Invalid Command"));
     }
 

@@ -32,4 +32,8 @@ public class CommandOptions {
         return Optional.ofNullable(options.get(option));
     }
 
+    public boolean containsOption(String option) {
+        return options.containsKey(option);
+    }
+
 }

@@ -39,6 +39,15 @@ Enter the percentage for each asset class when prompted. The asset name option i
 ```
 updatemix -n [asset name]
 ```
+### Show target asset mix
+```
+target
+```
+### Update target asset mix
+Enter the percentage for each asset class when prompted. Percentages must be between 0 and 100, while the total sum of percentages across classes must equal 100%.
+```
+updatetarget
+```
 ### Show re-balance results.
 ```
 balance

@@ -1,6 +1,7 @@
 package com.clstephenson.investmentrebalancer.commandrunner.commands;
 
 import com.clstephenson.investmentrebalancer.AssetMix;
+import com.clstephenson.investmentrebalancer.TargetMix;
 import com.clstephenson.investmentrebalancer.Holdings;
 import com.clstephenson.investmentrebalancer.commandrunner.*;
 
@@ -9,11 +10,12 @@ import java.util.function.UnaryOperator;
 public abstract class Command {
 
     private AvailableCommands commandType;
+    private TargetMix targetMix;
     private Holdings holdings;
     private CommandOptions commandOptions;
     private UnaryOperator<AssetMix> assetMixCallback;
 
-    public static Command createCommand(AvailableCommands commandType, Holdings holdings, CommandOptions commandOptions) {
+    public static Command createCommand(AvailableCommands commandType, Holdings holdings, CommandOptions commandOptions, TargetMix target) {
         Command command;
         switch (commandType) {
             case LIST_HOLDINGS:
@@ -37,6 +39,12 @@ public abstract class Command {
             case BALANCE:
                 command = new BalanceAssets();
                 break;
+            case SHOW_TARGET_ASSET_MIX:
+                command = new ShowTargetAssetMix();
+                break;
+            case UPDATE_TARGET_ASSET_MIX:
+                command = new UpdateTargetAssetMix();
+                break;
             case UPDATE_ASSET_MIX:
                 command = new UpdateAssetMix();
                 break;
@@ -47,6 +55,7 @@ public abstract class Command {
                 command = null;
         }
         command.setCommandType(commandType);
+        command.setTargetMix(target);
         command.setHoldings(holdings);
         command.setCommandOptions(commandOptions);
         return command;
@@ -54,6 +63,10 @@ public abstract class Command {
 
     public AvailableCommands getCommandType() {
         return commandType;
+    }
+
+    public TargetMix getTargetMix() {
+        return targetMix;
     }
 
     public Holdings getHoldings() {
@@ -66,6 +79,10 @@ public abstract class Command {
 
     public void setCommandType(AvailableCommands commandType) {
         this.commandType = commandType;
+    }
+
+    public void setTargetMix(TargetMix targetMix) {
+        this.targetMix = targetMix;
     }
 
     public void setHoldings(Holdings holdings) {
