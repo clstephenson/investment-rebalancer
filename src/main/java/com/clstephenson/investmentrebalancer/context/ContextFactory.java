@@ -22,6 +22,7 @@ public class ContextFactory {
 
     private static Context loadDataFromFile(String filename) {
         ObjectMapper objectMapper = new ObjectMapper();
+
         File dataFile = new File(filename);
         if (dataFile.canRead()) {
             try {
