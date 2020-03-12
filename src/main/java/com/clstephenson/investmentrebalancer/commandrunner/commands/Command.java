@@ -3,6 +3,7 @@ package com.clstephenson.investmentrebalancer.commandrunner.commands;
 import com.clstephenson.investmentrebalancer.AssetMix;
 import com.clstephenson.investmentrebalancer.context.Context;
 import com.clstephenson.investmentrebalancer.commandrunner.*;
+import com.clstephenson.investmentrebalancer.context.ContextPersistenceException;
 
 import java.util.function.UnaryOperator;
 
@@ -90,6 +91,6 @@ public abstract class Command {
         this.assetMixCallback = assetMixCallback;
     }
 
-    public abstract String run() throws InvalidCommandArgsException, InvalidOptionsException, InvalidAssetMixPercentageValue;
+    public abstract String run() throws InvalidCommandArgsException, InvalidOptionsException, InvalidAssetMixPercentageValue, ContextPersistenceException;
 
 }

@@ -4,6 +4,7 @@ import com.clstephenson.investmentrebalancer.commandrunner.*;
 import com.clstephenson.investmentrebalancer.commandrunner.commands.Command;
 import com.clstephenson.investmentrebalancer.context.Context;
 import com.clstephenson.investmentrebalancer.context.ContextFactory;
+import com.clstephenson.investmentrebalancer.context.ContextPersistenceException;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -14,8 +15,10 @@ import static com.clstephenson.investmentrebalancer.commandrunner.AvailableComma
 
 public class PortfolioRebalancer {
 
+    public static final String DATA_FILE_NAME = "investment-rebalancer.json";
+
     public static void main(String... args) {
-        Context context = ContextFactory.getContext();
+        Context context = ContextFactory.getContext(DATA_FILE_NAME);
 
         if (System.getenv("INSERT_TEST_DATA") != null) {
             insertTestData(context);
@@ -55,6 +58,9 @@ public class PortfolioRebalancer {
                 sendMessageToOutput(String.format("Command Syntax:%n%s", e.getCommandSyntax()));
             } catch (InvalidAssetMixPercentageValue e) {
                 sendMessageToOutput("The asset mix was NOT updated!\nEach asset class percentage must be between 0% and 100%, and the total mix should add up to 100%.");
+            } catch (ContextPersistenceException e) {
+                sendMessageToOutput(String.format("Unable to save the data to %s. Make sure the file is not open.",
+                        context.getDataFile().getAbsolutePath()));
             }
         }
     }
