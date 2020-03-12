@@ -3,6 +3,7 @@ package com.clstephenson.investmentrebalancer;
 import com.clstephenson.investmentrebalancer.commandrunner.*;
 import com.clstephenson.investmentrebalancer.commandrunner.commands.Command;
 
+import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.function.UnaryOperator;
@@ -33,7 +34,7 @@ public class PortfolioRebalancer {
                         for (AssetClass assetClass : AssetClass.values()) {
                             sendMessageToOutput(String.format("%s: ", assetClass.getName()), false);
                             String input = scanner.next();
-                            double percentValue = input.isEmpty() ? 0.0 : Double.parseDouble(input);
+                            BigDecimal percentValue = input.isEmpty() ? BigDecimal.ZERO : new BigDecimal(input);
                             assetMixValues.getMixItems().put(assetClass, percentValue);
                         }
                         return assetMixValues;
@@ -83,14 +84,14 @@ public class PortfolioRebalancer {
         try {
             sendMessageToOutput(getCommandFromInput("add -n ge -p 3.00 -s 50", context).run());
             sendMessageToOutput(getCommandFromInput("add -n ge -p 3.00 -s 1000", context).run());
-            context.getHoldings().getAssetFromHoldings("ge").get().getAssetMix().updatePercentageFor(AssetClass.US_STOCKS, 100d);
+            context.getHoldings().getAssetFromHoldings("ge").get().getAssetMix().updatePercentageFor(AssetClass.US_STOCKS, BigDecimal.valueOf(100));
             sendMessageToOutput(getCommandFromInput("add -n agilent -p 56.00 -s 250", context).run());
             sendMessageToOutput(getCommandFromInput("add -n agilent -p 56.00 -s 100", context).run());
-            context.getHoldings().getAssetFromHoldings("agilent").get().getAssetMix().updatePercentageFor(AssetClass.US_BONDS, 100d);
+            context.getHoldings().getAssetFromHoldings("agilent").get().getAssetMix().updatePercentageFor(AssetClass.US_BONDS, BigDecimal.valueOf(100));
             sendMessageToOutput(getCommandFromInput("holdings", context).run());
             sendMessageToOutput(getCommandFromInput("assets -n ge", context).run());
-            context.getTargetMix().getAssetMix().updatePercentageFor(AssetClass.US_STOCKS, 60d);
-            context.getTargetMix().getAssetMix().updatePercentageFor(AssetClass.US_BONDS, 40d);
+            context.getTargetMix().getAssetMix().updatePercentageFor(AssetClass.US_STOCKS, BigDecimal.valueOf(60));
+            context.getTargetMix().getAssetMix().updatePercentageFor(AssetClass.US_BONDS, BigDecimal.valueOf(40));
             sendMessageToOutput(getCommandFromInput("balance", context).run());
         } catch (Exception e) {
             throw new RuntimeException(e);

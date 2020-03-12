@@ -1,7 +1,6 @@
 package com.clstephenson.investmentrebalancer;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,8 +26,8 @@ public class TargetMix {
         BigDecimal totalValueOfHoldings = holdings.getTotalValueOfHoldings();
         for (AssetClass assetClass : AssetClass.values()) {
             BigDecimal targetValue = totalValueOfHoldings
-                    .multiply(BigDecimal.valueOf(this.assetMix.getMixPercentageFor(assetClass)))
-                    .divide(BigDecimal.valueOf(100d), RoundingMode.HALF_UP);
+                    .multiply(this.assetMix.getMixPercentageFor(assetClass))
+                    .movePointLeft(2);
             valuations.put(assetClass, targetValue);
         }
         return valuations;

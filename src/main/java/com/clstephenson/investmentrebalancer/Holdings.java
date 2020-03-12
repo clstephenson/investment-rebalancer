@@ -3,6 +3,7 @@ package com.clstephenson.investmentrebalancer;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidAssetMixPercentageValue;
 
 import java.math.BigDecimal;
+import java.math.MathContext;
 import java.math.RoundingMode;
 import java.util.*;
 
@@ -49,6 +50,30 @@ public class Holdings {
         return Optional.ofNullable(foundAsset);
     }
 
+    public AssetMix getCumulativeAssetMix() throws InvalidAssetMixPercentageValue {
+        AssetMix mix = new AssetMix();
+        BigDecimal totalValue = getTotalValueOfHoldings();
+        Map<AssetClass, BigDecimal> valuesByAssetClass = getCurrentValuations();
+
+        for (AssetClass assetClass : AssetClass.values()) {
+            BigDecimal percentage = valuesByAssetClass.get(assetClass)
+                    .divide(totalValue, MathContext.DECIMAL128)
+                    .multiply(new BigDecimal("100"));
+            mix.updatePercentageFor(assetClass, percentage);
+        }
+        return mix;
+    }
+
+    public Map<AssetClass, BigDecimal> getCurrentValuations() {
+        Map<AssetClass, BigDecimal> valuesByAssetClass = new HashMap<>();
+        for (Holding holding : this.holdings) {
+            Arrays.stream(AssetClass.values()).forEach(assetClass ->
+                    valuesByAssetClass.merge(assetClass, holding.getValue(assetClass), BigDecimal::add)
+            );
+        }
+        return valuesByAssetClass;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -67,31 +92,5 @@ public class Holdings {
         return "Holdings{" +
                 "holdings=" + holdings +
                 '}';
-    }
-
-    public AssetMix getCumulativeAssetMix() throws InvalidAssetMixPercentageValue {
-        AssetMix mix = new AssetMix();
-        BigDecimal totalValue = getTotalValueOfHoldings();
-        Map<AssetClass, BigDecimal> valuesByAssetClass = getCurrentValuations();
-
-        for (AssetClass assetClass : AssetClass.values()) {
-            double percentage = valuesByAssetClass.get(assetClass)
-                    .divide(totalValue, RoundingMode.HALF_UP)
-                    .multiply(BigDecimal.valueOf(100d))
-                    .setScale(2, RoundingMode.HALF_UP)
-                    .doubleValue();
-            mix.updatePercentageFor(assetClass, percentage);
-        }
-        return mix;
-    }
-
-    public Map<AssetClass, BigDecimal> getCurrentValuations() {
-        Map<AssetClass, BigDecimal> valuesByAssetClass = new HashMap<>();
-        for (Holding holding : this.holdings) {
-            Arrays.stream(AssetClass.values()).forEach(assetClass ->
-                    valuesByAssetClass.merge(assetClass, holding.getValue(assetClass), BigDecimal::add)
-            );
-        }
-        return valuesByAssetClass;
     }
 }

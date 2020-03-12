@@ -5,6 +5,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.math.BigDecimal;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
@@ -26,41 +28,39 @@ class AssetMixTest {
     @Test
     void givenEmptyAssetMix_whenUpdatePercentageTo50_getMixPercentageForReturns50() throws InvalidAssetMixPercentageValue {
         AssetClass assetClass = AssetClass.values()[1];
-        assetMix.updatePercentageFor(assetClass, 50d);
-        assertThat(assetMix.getMixPercentageFor(assetClass), is(50d));
+        assetMix.updatePercentageFor(assetClass, BigDecimal.valueOf(50));
+        assertThat(assetMix.getMixPercentageFor(assetClass).toPlainString(), is("50"));
     }
 
     @Test
     void givenEmptyAssetMix_whenUpdatePercentageLessThanZero_throwsNumberFormatException() {
         AssetClass assetClass = AssetClass.values()[1];
-        double percentage = -0.1;
         Assertions.assertThrows(InvalidAssetMixPercentageValue.class,
-                () -> assetMix.updatePercentageFor(assetClass, percentage));
+                () -> assetMix.updatePercentageFor(assetClass, BigDecimal.valueOf(-1)));
     }
 
     @Test
     void givenEmptyAssetMix_whenUpdatePercentageGreaterThan100_throwsNumberFormatException() {
         AssetClass assetClass = AssetClass.values()[1];
-        double percentage = 100.1;
         Assertions.assertThrows(InvalidAssetMixPercentageValue.class,
-                () -> assetMix.updatePercentageFor(assetClass, percentage));
+                () -> assetMix.updatePercentageFor(assetClass, BigDecimal.valueOf(101)));
     }
 
     @Test
     void givenAssetMixOfTwoClasses_getTotalMixPercentage_returnsSumOfBothPercentages() throws InvalidAssetMixPercentageValue {
         AssetClass assetClass1 = AssetClass.values()[1];
         AssetClass assetClass2 = AssetClass.values()[0];
-        assetMix.updatePercentageFor(assetClass1, 20.2);
-        assetMix.updatePercentageFor(assetClass2, 40.6);
-        assertThat(assetMix.getTotalMixPercentage(), is(60.8));
+        assetMix.updatePercentageFor(assetClass1, BigDecimal.valueOf(20));
+        assetMix.updatePercentageFor(assetClass2, BigDecimal.valueOf(40));
+        assertThat(assetMix.getTotalMixPercentage().toPlainString(), is("60"));
     }
 
     @Test
     void givenAssetMixWithTwoClassesOf50Percent_isValid_returnsTrue() throws InvalidAssetMixPercentageValue {
         AssetClass assetClass1 = AssetClass.values()[1];
         AssetClass assetClass2 = AssetClass.values()[0];
-        assetMix.getMixItems().put(assetClass1, 50d);
-        assetMix.getMixItems().put(assetClass2, 50d);
+        assetMix.getMixItems().put(assetClass1, BigDecimal.valueOf(50));
+        assetMix.getMixItems().put(assetClass2, BigDecimal.valueOf(50));
         assertThat(assetMix.isValid(), is(true));
     }
 
@@ -68,22 +68,22 @@ class AssetMixTest {
     void givenAssetMixWithTwoClassesOf70Percent_isValid_throwsException() throws InvalidAssetMixPercentageValue {
         AssetClass assetClass1 = AssetClass.values()[1];
         AssetClass assetClass2 = AssetClass.values()[0];
-        assetMix.getMixItems().put(assetClass1, 70d);
-        assetMix.getMixItems().put(assetClass2, 70d);
+        assetMix.getMixItems().put(assetClass1, BigDecimal.valueOf(70));
+        assetMix.getMixItems().put(assetClass2, BigDecimal.valueOf(70));
         Assertions.assertThrows(InvalidAssetMixPercentageValue.class, () -> assetMix.isValid());
     }
 
     @Test
     void givenAssetMixWithOneClassGreaterThan100Percent_isValid_throwsException() throws InvalidAssetMixPercentageValue {
         AssetClass assetClass1 = AssetClass.values()[1];
-        assetMix.getMixItems().put(assetClass1, 101d);
+        assetMix.getMixItems().put(assetClass1, BigDecimal.valueOf(101));
         Assertions.assertThrows(InvalidAssetMixPercentageValue.class, () -> assetMix.isValid());
     }
 
     @Test
     void givenAssetMixWithOneClassLessThan0Percent_isValid_throwsException() throws InvalidAssetMixPercentageValue {
         AssetClass assetClass1 = AssetClass.values()[1];
-        assetMix.getMixItems().put(assetClass1, -1d);
+        assetMix.getMixItems().put(assetClass1, BigDecimal.valueOf(-1));
         Assertions.assertThrows(InvalidAssetMixPercentageValue.class, () -> assetMix.isValid());
     }
 }

@@ -65,7 +65,7 @@ public class ShowAssetDetails extends Command {
         for (Asset asset : assets) {
             BigDecimal totalSharesInHoldings = holdings.getHoldings().stream()
                     .filter(holding -> holding.getAsset().equals(asset))
-                    .map(holding -> holding.getNumberOfShares())
+                    .map(Holding::getNumberOfShares)
                     .reduce(BigDecimal::add).get();
 
             output.append(String.format("Name: %s\n", asset.getName()))

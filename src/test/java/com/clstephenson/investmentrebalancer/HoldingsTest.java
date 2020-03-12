@@ -3,6 +3,7 @@ package com.clstephenson.investmentrebalancer;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidAssetMixPercentageValue;
 import org.hamcrest.Matchers;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -91,19 +92,19 @@ class HoldingsTest {
         Holdings testHoldings = new Holdings();
         AssetMix mix1 = new AssetMix();
         AssetMix mix2 = new AssetMix();
-        mix1.updatePercentageFor(AssetClass.CASH, 25d);
-        mix1.updatePercentageFor(AssetClass.US_STOCKS, 75d);
-        mix2.updatePercentageFor(AssetClass.CASH, 15d);
-        mix2.updatePercentageFor(AssetClass.US_BONDS, 85d);
+        mix1.updatePercentageFor(AssetClass.CASH, new BigDecimal("25"));
+        mix1.updatePercentageFor(AssetClass.US_STOCKS, new BigDecimal("75"));
+        mix2.updatePercentageFor(AssetClass.CASH, new BigDecimal("15"));
+        mix2.updatePercentageFor(AssetClass.US_BONDS, new BigDecimal("85"));
         Asset asset1 = new Asset("stock", "", BigDecimal.TEN, mix1);
         Asset asset2 = new Asset("stock2", "", BigDecimal.TEN, mix2);
         testHoldings.add(new Holding(asset1, new BigDecimal(100)));
         testHoldings.add(new Holding(asset2, new BigDecimal(100)));
 
         AssetMix expectedMix = new AssetMix();
-        expectedMix.updatePercentageFor(AssetClass.CASH, 20d);
-        expectedMix.updatePercentageFor(AssetClass.US_STOCKS, 37.5);
-        expectedMix.updatePercentageFor(AssetClass.US_BONDS, 42.5);
+        expectedMix.updatePercentageFor(AssetClass.CASH, new BigDecimal("20"));
+        expectedMix.updatePercentageFor(AssetClass.US_STOCKS, new BigDecimal("37.5"));
+        expectedMix.updatePercentageFor(AssetClass.US_BONDS, new BigDecimal("42.5"));
         assertThat(testHoldings.getCumulativeAssetMix(), is(expectedMix));
     }
 }

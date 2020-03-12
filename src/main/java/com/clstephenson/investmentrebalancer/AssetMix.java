@@ -2,52 +2,50 @@ package com.clstephenson.investmentrebalancer;
 
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidAssetMixPercentageValue;
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Map;
-import java.util.Objects;
+import java.math.BigDecimal;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class AssetMix {
 
-    private final Map<AssetClass, Double> mixItems;
+    private final Map<AssetClass, BigDecimal> mixItems;
 
     public AssetMix() {
         this.mixItems = Arrays.stream(AssetClass.values())
                 .collect(
-                        Collectors.toMap(assetClass -> assetClass, assetClass -> 0d)
+                        Collectors.toMap(assetClass -> assetClass, assetClass -> BigDecimal.ZERO)
                 );
     }
 
-    public Map<AssetClass, Double> getMixItems() {
+    public Map<AssetClass, BigDecimal> getMixItems() {
         return mixItems;
     }
 
-    public double getMixPercentageFor(AssetClass assetClass) {
+    public BigDecimal getMixPercentageFor(AssetClass assetClass) {
         return this.mixItems.get(assetClass);
     }
 
-    public void updatePercentageFor(AssetClass assetClass, double percentage) throws InvalidAssetMixPercentageValue {
-        if (percentage < 0 || percentage > 100) {
+    public void updatePercentageFor(AssetClass assetClass, BigDecimal percentage) throws InvalidAssetMixPercentageValue {
+        if (percentage.compareTo(BigDecimal.ZERO) < 0 || percentage.compareTo(BigDecimal.valueOf(100)) > 0) {
             throw new InvalidAssetMixPercentageValue("Percentage must be between 0 and 100.");
         }
         this.mixItems.replace(assetClass, percentage);
     }
 
-    public double getTotalMixPercentage() {
+    public BigDecimal getTotalMixPercentage() {
         return this.mixItems.values().stream()
-                .reduce(0d, Double::sum);
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public boolean isValid() throws InvalidAssetMixPercentageValue {
         boolean isValid = true;
-        for (Map.Entry<AssetClass, Double> entry : mixItems.entrySet()) {
-            if (entry.getValue() < 0.0 || entry.getValue() > 100.0) {
+        for (Map.Entry<AssetClass, BigDecimal> entry : mixItems.entrySet()) {
+            if (entry.getValue().compareTo(BigDecimal.ZERO) < 0 || entry.getValue().compareTo(BigDecimal.valueOf(100)) > 0) {
                 isValid = false;
                 break;
             }
         }
-        if (getTotalMixPercentage() != 100.0) {
+        if (getTotalMixPercentage().compareTo(BigDecimal.valueOf(100)) != 0) {
             throw new InvalidAssetMixPercentageValue("Total mix percentage must equal 100%");
         } else if (!isValid) {
             throw new InvalidAssetMixPercentageValue("Percentage must be between 0 and 100%");
@@ -60,7 +58,14 @@ public class AssetMix {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         AssetMix mix = (AssetMix) o;
-        return mixItems.equals(mix.mixItems);
+        if (this.mixItems.size() != mix.mixItems.size()) return false;
+        for (AssetClass assetClass : this.mixItems.keySet()) {
+            if (!mix.mixItems.containsKey(assetClass) ||
+                    (this.mixItems.get(assetClass).compareTo(mix.mixItems.get(assetClass)) != 0)) {
+                return false;
+            }
+        }
+        return true;
     }
 
     @Override
