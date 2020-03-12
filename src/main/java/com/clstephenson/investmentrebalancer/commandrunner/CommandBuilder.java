@@ -1,7 +1,7 @@
 package com.clstephenson.investmentrebalancer.commandrunner;
 
 import com.clstephenson.investmentrebalancer.AssetClass;
-import com.clstephenson.investmentrebalancer.Context;
+import com.clstephenson.investmentrebalancer.context.Context;
 import com.clstephenson.investmentrebalancer.commandrunner.commands.Command;
 
 import java.util.Map;

@@ -1,7 +1,7 @@
 package com.clstephenson.investmentrebalancer.commandrunner.commands;
 
 import com.clstephenson.investmentrebalancer.AssetMix;
-import com.clstephenson.investmentrebalancer.Context;
+import com.clstephenson.investmentrebalancer.context.Context;
 import com.clstephenson.investmentrebalancer.commandrunner.*;
 
 import java.util.function.UnaryOperator;

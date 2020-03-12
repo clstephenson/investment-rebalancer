@@ -2,6 +2,8 @@ package com.clstephenson.investmentrebalancer;
 
 import com.clstephenson.investmentrebalancer.commandrunner.*;
 import com.clstephenson.investmentrebalancer.commandrunner.commands.Command;
+import com.clstephenson.investmentrebalancer.context.Context;
+import com.clstephenson.investmentrebalancer.context.ContextFactory;
 
 import java.math.BigDecimal;
 import java.util.Arrays;
@@ -13,7 +15,7 @@ import static com.clstephenson.investmentrebalancer.commandrunner.AvailableComma
 public class PortfolioRebalancer {
 
     public static void main(String... args) {
-        Context context = Context.getContext();
+        Context context = ContextFactory.getContext();
 
         if (System.getenv("INSERT_TEST_DATA") != null) {
             insertTestData(context);

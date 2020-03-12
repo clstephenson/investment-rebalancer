@@ -1,5 +1,7 @@
 package com.clstephenson.investmentrebalancer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -20,6 +22,7 @@ public class TargetMix {
         this.assetMix = assetMix;
     }
 
+    @JsonIgnore
     public Map<AssetClass, BigDecimal> getTargetValuations(Holdings holdings) {
         //todo need to write test for this
         Map<AssetClass, BigDecimal> valuations = new HashMap<>();

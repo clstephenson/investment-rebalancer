@@ -1,5 +1,8 @@
 package com.clstephenson.investmentrebalancer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Objects;
@@ -7,9 +10,12 @@ import java.util.UUID;
 
 public class Holding {
 
+    @JsonProperty
     private UUID uuid;
     private Asset asset;
     private BigDecimal numberOfShares;
+
+    public Holding() {}
 
     public Holding(Asset asset, BigDecimal numberOfShares) {
         this.uuid = UUID.randomUUID();
@@ -21,6 +27,15 @@ public class Holding {
         return asset;
     }
 
+    public BigDecimal getNumberOfShares() {
+        return numberOfShares;
+    }
+
+    public void setNumberOfShares(BigDecimal numberOfShares) {
+        this.numberOfShares = numberOfShares;
+    }
+
+    @JsonIgnore
     private BigDecimal calculateValue(BigDecimal percentage) {
         return asset.getPricePerShare()
                 .multiply(numberOfShares)
@@ -28,21 +43,15 @@ public class Holding {
                 .divide(new BigDecimal("100"), RoundingMode.HALF_UP);
     }
 
+    @JsonIgnore
     public BigDecimal getValue() {
         return calculateValue(BigDecimal.valueOf(100));
     }
 
+    @JsonIgnore
     public BigDecimal getValue(AssetClass assetClass) {
         BigDecimal percentage = this.asset.getAssetMix().getMixPercentageFor(assetClass);
         return calculateValue(percentage);
-    }
-
-    public BigDecimal getNumberOfShares() {
-        return numberOfShares;
-    }
-
-    public void setNumberOfShares(BigDecimal numberOfShares) {
-        this.numberOfShares = numberOfShares;
     }
 
     @Override

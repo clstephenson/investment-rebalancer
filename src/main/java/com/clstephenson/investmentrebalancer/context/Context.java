@@ -1,23 +1,13 @@
-package com.clstephenson.investmentrebalancer;
+package com.clstephenson.investmentrebalancer.context;
+
+import com.clstephenson.investmentrebalancer.Holdings;
+import com.clstephenson.investmentrebalancer.TargetMix;
 
 public class Context {
-    private static volatile Context instance;
     private Holdings holdings;
     private TargetMix targetMix;
 
-    static Context getContext() {
-        if (instance != null) {
-            return instance;
-        }
-        synchronized (Context.class) {
-            if (instance == null) {
-                instance = new Context();
-            }
-        }
-        return instance;
-    }
-
-    private Context() {
+    Context() {
         this.holdings = new Holdings();
         this.targetMix = new TargetMix();
     }

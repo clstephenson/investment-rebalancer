@@ -1,6 +1,7 @@
 package com.clstephenson.investmentrebalancer;
 
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidAssetMixPercentageValue;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -8,11 +9,15 @@ import java.util.UUID;
 
 public class Asset {
 
+    @JsonProperty
     private UUID uuid;
     private String name;
     private String symbol;
     private BigDecimal pricePerShare;
     private AssetMix assetMix;
+
+    public Asset() {
+    }
 
     public Asset(String name, BigDecimal pricePerShare) {
         this(name, "", pricePerShare, new AssetMix());

@@ -1,10 +1,10 @@
 package com.clstephenson.investmentrebalancer;
 
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidAssetMixPercentageValue;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
 import java.math.MathContext;
-import java.math.RoundingMode;
 import java.util.*;
 
 public class Holdings {
@@ -34,6 +34,7 @@ public class Holdings {
         return holdings.remove(holding);
     }
 
+    @JsonIgnore
     public BigDecimal getTotalValueOfHoldings() {
         BigDecimal totalValue =
                 holdings.stream()
@@ -42,6 +43,7 @@ public class Holdings {
         return totalValue;
     }
 
+    @JsonIgnore
     public Optional<Asset> getAssetFromHoldings(String assetName) {
         Asset foundAsset = this.getHoldings().stream()
                 .map(Holding::getAsset)
@@ -50,6 +52,7 @@ public class Holdings {
         return Optional.ofNullable(foundAsset);
     }
 
+    @JsonIgnore
     public AssetMix getCumulativeAssetMix() throws InvalidAssetMixPercentageValue {
         AssetMix mix = new AssetMix();
         BigDecimal totalValue = getTotalValueOfHoldings();
@@ -64,6 +67,7 @@ public class Holdings {
         return mix;
     }
 
+    @JsonIgnore
     public Map<AssetClass, BigDecimal> getCurrentValuations() {
         Map<AssetClass, BigDecimal> valuesByAssetClass = new HashMap<>();
         for (Holding holding : this.holdings) {

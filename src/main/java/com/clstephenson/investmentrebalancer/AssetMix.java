@@ -1,8 +1,10 @@
 package com.clstephenson.investmentrebalancer;
 
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidAssetMixPercentageValue;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -32,11 +34,13 @@ public class AssetMix {
         this.mixItems.replace(assetClass, percentage);
     }
 
+    @JsonIgnore
     public BigDecimal getTotalMixPercentage() {
         return this.mixItems.values().stream()
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    @JsonIgnore
     public boolean isValid() throws InvalidAssetMixPercentageValue {
         boolean isValid = true;
         for (Map.Entry<AssetClass, BigDecimal> entry : mixItems.entrySet()) {
@@ -81,7 +85,7 @@ public class AssetMix {
                 .forEachOrdered(entry ->
                         stringBuilder.append(String.format("\t%s: %s percent\n",
                                 entry.getKey().getName(),
-                                entry.getValue())
+                                entry.getValue().setScale(2, RoundingMode.HALF_UP))
                         )
                 );
         return stringBuilder.toString();
