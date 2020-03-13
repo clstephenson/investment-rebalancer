@@ -20,9 +20,9 @@ public class BalanceAssets extends Command {
             throw new InvalidCommandArgsException("balance requires Holdings object to run.");
         }
 
-        if (getContext().getHoldings().getHoldings().isEmpty()) {
-            output.append("There are no assets yet. Add an asset using the following command...\n");
-            output.append(AvailableCommands.ADD_ASSET.getSyntaxHelp());
+        if (getContext().getHoldings().isEmpty()) {
+            output.append("There are no holdings yet. Add a holding using the following command...\n");
+            output.append(AvailableCommands.ADD_HOLDING.getSyntaxHelp());
         } else {
             Map<AssetClass, BigDecimal> currentValuations = getContext().getHoldings().getCurrentValuations();
             Map<AssetClass, BigDecimal> targetValuations = getContext().getTargetMix().getTargetValuations(getContext().getHoldings());

@@ -26,7 +26,8 @@ public class UpdateAssetMix extends Command {
 
         String assetName = getCommandOptions().getOptionValue("n")
                 .orElseThrow(() -> new InvalidOptionsException("asset name is required", syntax));
-        Asset asset = getContext().getHoldings().getAssetFromHoldings(assetName)
+        Asset asset = getContext().getAssets()
+                .getAssetMatching(a -> a.getName().equalsIgnoreCase(assetName))
                 .orElseThrow(() -> new InvalidOptionsException("Invalid asset", syntax));
 
         AssetMix mix = new AssetMix();

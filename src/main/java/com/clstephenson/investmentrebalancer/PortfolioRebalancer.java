@@ -89,6 +89,7 @@ public class PortfolioRebalancer {
     }
 
     private static void insertTestData(Context context) {
+        //todo: need to update these commands
         try {
             sendMessageToOutput(getCommandFromInput("add -n ge -p 3.00 -s 50", context).run());
             sendMessageToOutput(getCommandFromInput("add -n ge -p 3.00 -s 1000", context).run());

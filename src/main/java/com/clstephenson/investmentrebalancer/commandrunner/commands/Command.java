@@ -1,6 +1,7 @@
 package com.clstephenson.investmentrebalancer.commandrunner.commands;
 
 import com.clstephenson.investmentrebalancer.AssetMix;
+import com.clstephenson.investmentrebalancer.Holdings;
 import com.clstephenson.investmentrebalancer.context.Context;
 import com.clstephenson.investmentrebalancer.commandrunner.*;
 import com.clstephenson.investmentrebalancer.context.ContextPersistenceException;
@@ -17,35 +18,41 @@ public abstract class Command {
     public static Command createCommand(Context context, AvailableCommands commandType, CommandOptions commandOptions) {
         Command command;
         switch (commandType) {
-            case LIST_HOLDINGS:
-                command = new ListHoldings();
+            case SHOW_HOLDINGS:
+                command = new ShowHoldings();
                 break;
-            case LIST_ASSET_CLASSES:
-                command = new ListAssetClasses();
-                break;
+//            case SHOW_ASSETS:
+//                command = new ShowAssets();
+//                break;
             case SHOW_ASSET_DETAILS:
                 command = new ShowAssetDetails();
                 break;
-            case ADD_ASSET:
-                command = new AddAsset();
-                break;
-            case DELETE_ASSET:
-                command = new DeleteAsset();
-                break;
-            case UPDATE_ASSET:
-                command = new UpdateAsset();
-                break;
-            case BALANCE:
-                command = new BalanceAssets();
+            case SHOW_ASSET_CLASSES:
+                command = new ShowAssetClasses();
                 break;
             case SHOW_TARGET_ASSET_MIX:
                 command = new ShowTargetAssetMix();
                 break;
-            case UPDATE_TARGET_ASSET_MIX:
-                command = new UpdateTargetAssetMix();
+            case ADD_HOLDING:
+                command = new AddHolding();
+                break;
+            case ADD_OR_UPDATE_ASSET:
+                command = new UpdateAsset();
                 break;
             case UPDATE_ASSET_MIX:
                 command = new UpdateAssetMix();
+                break;
+            case UPDATE_TARGET_ASSET_MIX:
+                command = new UpdateTargetAssetMix();
+                break;
+            case DELETE_HOLDING:
+                command = new DeleteHolding();
+                break;
+            case DELETE_ASSET:
+                command = new DeleteAsset();
+                break;
+            case BALANCE:
+                command = new BalanceAssets();
                 break;
             case EXIT_PROGRAM:
                 command = new ExitProgram();

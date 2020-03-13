@@ -1,6 +1,6 @@
 package com.clstephenson.investmentrebalancer.commandrunner.commands;
 
-import com.clstephenson.investmentrebalancer.Holding;
+import com.clstephenson.investmentrebalancer.Asset;
 import com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidCommandArgsException;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidOptionsException;
@@ -11,8 +11,10 @@ public class DeleteAsset extends Command {
     public String run()
             throws InvalidCommandArgsException, InvalidOptionsException {
 
-        if (getContext().getHoldings() == null) {
-            throw new InvalidCommandArgsException("DeleteAsset requires Holdings object to run.");
+        StringBuilder output = new StringBuilder();
+
+        if (getContext().getAssets() == null) {
+            throw new InvalidCommandArgsException("DeleteAsset requires Assets object to run.");
         }
 
         String syntax = AvailableCommands.DELETE_ASSET.getSyntaxHelp();
@@ -28,18 +30,24 @@ public class DeleteAsset extends Command {
                             .orElseThrow(() -> new InvalidOptionsException("missing asset number", syntax))
             );
         } catch (NumberFormatException e) {
-            throw new InvalidOptionsException("Invalid asset. Use the 'list' command to show available asset numbers.");
+            throw new InvalidOptionsException("Invalid asset. Use the 'assets' command to show available asset numbers.");
         }
 
-        Holding holdingToDelete = getContext().getHoldings().getHoldingAtIndex(index)
+        Asset assetToDelete = getContext().getAssets().getAssetAtIndex(index)
                 .orElseThrow(() ->
-                        new InvalidOptionsException("Asset option must be a number. Use the 'list' command to show available asset numbers."));
+                        new InvalidOptionsException("Invalid asset. Use the 'assets' command to show available asset numbers."));
 
-        return getContext().getHoldings().deleteHolding(holdingToDelete) ?
-                String.format(
-                        "%s asset with %s shares deleted.",
-                        holdingToDelete.getAsset().getName(),
-                        holdingToDelete.getNumberOfShares().toString()) :
-                "No assets were deleted.";
+        if (getContext().getHoldings().deleteHoldingsThatMatch(holding -> holding.getAsset().equals(assetToDelete))) {
+            output.append("Deleted holding matching the specified asset.\n");
+            if (getContext().getAssets().deleteAsset(assetToDelete)) {
+                output.append(String.format("Deleted asset %s.", assetToDelete.getName()));
+            } else {
+                output.append("Deleted asset holdings, but could not delete the asset.\n");
+            }
+        } else {
+            output.append("Unable to delete the asset or its holdings.");
+        }
+
+        return output.toString();
     }
 }

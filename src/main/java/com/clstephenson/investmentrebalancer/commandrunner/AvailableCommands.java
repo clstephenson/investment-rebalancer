@@ -5,15 +5,22 @@ import java.util.Optional;
 
 public enum AvailableCommands {
 
-    LIST_HOLDINGS("holdings", "holdings\nholdings -n [asset name]"),
-    LIST_ASSET_CLASSES("classes", "classes"),
+    SHOW_HOLDINGS("holdings", "holdings\nholdings -n [asset name]"),
+//    SHOW_ASSETS("assets", "assets"),
     SHOW_ASSET_DETAILS( "assets", "assets\nassets -n [asset name]"),
-    ADD_ASSET("add", "add -n [asset name] -p [share price] -s [number of shares]"),
-    UPDATE_ASSET ("update", "update -i [asset ID from list] -n [asset name] -p [share price] -s [number of shares]"),
-    DELETE_ASSET("delete", "delete -i [asset ID from list]"),
-    UPDATE_ASSET_MIX("updatemix", "updatemix -n [asset name]"),
+    SHOW_ASSET_CLASSES("classes", "classes"),
     SHOW_TARGET_ASSET_MIX("target", "target"),
+
+    ADD_HOLDING("addholding", "addholding -n [asset name] -s [number of shares]"),
+    ADD_OR_UPDATE_ASSET("updateasset", "updateasset -n [asset name] -p [share price]"),
+
+    UPDATE_HOLDING("updateholding", "updateholding -i [holding ID from list] -s [number of shares]"),
+    UPDATE_ASSET_MIX("updatemix", "updatemix -n [asset name]"),
     UPDATE_TARGET_ASSET_MIX("updatetarget", "updatetarget"),
+
+    DELETE_HOLDING("deleteholding", "delete -i [holding ID from list]"),
+    DELETE_ASSET("deleteasset", "delete -i [asset ID from list]"),
+
     BALANCE("balance", ""),
     EXIT_PROGRAM("exit", "exit")
     ;

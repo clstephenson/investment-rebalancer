@@ -2,17 +2,13 @@ package com.clstephenson.investmentrebalancer.commandrunner.commands;
 
 import com.clstephenson.investmentrebalancer.Asset;
 import com.clstephenson.investmentrebalancer.Holding;
-import com.clstephenson.investmentrebalancer.Holdings;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidCommandArgsException;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidOptionsException;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands.ADD_ASSET;
-import static com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands.SHOW_ASSET_DETAILS;
+import static com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands.*;
 
 public class ShowAssetDetails extends Command {
 
@@ -22,51 +18,43 @@ public class ShowAssetDetails extends Command {
 
         StringBuilder output = new StringBuilder();
 
-        if (getContext().getHoldings() == null) {
-            throw new InvalidCommandArgsException("ShowAssetDetails requires Holdings object to run.");
+        if (getContext().getAssets() == null) {
+            throw new InvalidCommandArgsException("ShowAssetDetails requires Assets object to run.");
         }
 
-        if (getContext().getHoldings().getHoldings().isEmpty()) {
-            output.append("There are no holdings yet. Use the following command to add one...\n");
-            output.append(ADD_ASSET.getSyntaxHelp());
+        if (getContext().getAssets().isEmpty()) {
+            output.append("There are no assets yet. Use the following command to add one...\n");
+            output.append(ADD_OR_UPDATE_ASSET.getSyntaxHelp());
         } else {
-            List<Asset> assets = getAssetsFromHoldings(getContext().getHoldings());
-            List<Asset> matchedAssets = new ArrayList<>();
+            Asset matchedAsset = null;
 
             if (getCommandOptions() != null) {
                 String assetName = getCommandOptions().getOptionValue("n")
                         .orElseThrow(() -> new InvalidOptionsException("asset name missing", SHOW_ASSET_DETAILS.getSyntaxHelp()));
 
-                assets.stream()
-                        .filter(asset -> asset.getName().equalsIgnoreCase(assetName))
-                        .forEach(matchedAssets::add);
+                matchedAsset = getContext().getAssets()
+                        .getAssetMatching(asset -> asset.getName().equalsIgnoreCase(assetName))
+                        .orElse(null);
             }
 
-            if (matchedAssets.isEmpty()) {
-                output.append(buildOutputString(getContext().getHoldings(), assets));
+            if (matchedAsset != null) {
+                output.append(buildOutputString(Stream.of(matchedAsset)));
             } else {
-                output.append(buildOutputString(getContext().getHoldings(), matchedAssets));
+                output.append(buildOutputString(getContext().getAssets().stream()));
             }
         }
 
         return output.toString();
     }
 
-    private List<Asset> getAssetsFromHoldings(Holdings holdings) {
-        return holdings.getHoldings().stream()
-                .map(Holding::getAsset)
-                .distinct()
-                .collect(Collectors.toList());
-    }
-
-    private String buildOutputString(Holdings holdings, List<Asset> assets) {
+    private String buildOutputString(Stream<Asset> assets) {
         StringBuilder output = new StringBuilder();
 
-        for (Asset asset : assets) {
-            BigDecimal totalSharesInHoldings = holdings.getHoldings().stream()
-                    .filter(holding -> holding.getAsset().equals(asset))
+        assets.forEach(asset -> {
+            BigDecimal totalSharesInHoldings = getContext().getHoldings()
+                    .getHoldingsThatMatch(holding -> holding.getAsset().equals(asset))
                     .map(Holding::getNumberOfShares)
-                    .reduce(BigDecimal::add).get();
+                    .reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
 
             output.append(String.format("Name: %s\n", asset.getName()))
                     .append(String.format("Symbol: %s\n", asset.getSymbol()))
@@ -74,7 +62,7 @@ public class ShowAssetDetails extends Command {
                     .append(String.format("Total Shares in Holdings: %s\n", totalSharesInHoldings))
                     .append("Asset Mix:\n")
                     .append(asset.getAssetMix().toString());
-        }
+        });
 
         return output.toString();
     }

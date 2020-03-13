@@ -5,9 +5,9 @@ import com.clstephenson.investmentrebalancer.Holdings;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidAssetMixPercentageValue;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidCommandArgsException;
 
-import static com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands.ADD_ASSET;
+import static com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands.ADD_HOLDING;
 
-public class ListHoldings extends Command {
+public class ShowHoldings extends Command {
 
     @Override
     public String run()
@@ -19,21 +19,21 @@ public class ListHoldings extends Command {
             throw new InvalidCommandArgsException("ListHoldings requires Holdings object to run.");
         }
 
-        if (getContext().getHoldings().getHoldings().isEmpty()) {
+        if (getContext().getHoldings().isEmpty()) {
             output.append("There are no holdings yet. Use the following command to add one...\n");
-            output.append(ADD_ASSET.getSyntaxHelp());
+            output.append(ADD_HOLDING.getSyntaxHelp());
         } else {
             Holdings matchedHoldings = new Holdings();
             if (getCommandOptions() != null) {
                 getCommandOptions().getOptionValue("n")
                         .ifPresent(s -> {
-                            getContext().getHoldings().getHoldings().stream()
-                                    .filter(holding -> holding.getAsset().getName().equalsIgnoreCase(s))
+                            getContext().getHoldings().getHoldingsThatMatch(
+                                    holding -> holding.getAsset().getName().equalsIgnoreCase(s))
                                     .forEach(matchedHoldings::add);
                         });
             }
 
-            if (matchedHoldings.getHoldings().isEmpty()) {
+            if (matchedHoldings.isEmpty()) {
                 output.append(buildOutputString(getContext().getHoldings()));
                 output.append(getContext().getHoldings().getCumulativeAssetMix().toString());
             } else {

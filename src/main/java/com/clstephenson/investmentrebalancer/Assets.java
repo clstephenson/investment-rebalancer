@@ -1,9 +1,13 @@
 package com.clstephenson.investmentrebalancer;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.Optional;
+import java.util.function.Predicate;
+import java.util.stream.Stream;
 
 public class Assets {
 
@@ -15,6 +19,10 @@ public class Assets {
 
     public List<Asset> getAssets() {
         return assets;
+    }
+
+    public Optional<Asset> getAssetMatching(Predicate<Asset> filter) {
+        return assets.stream().filter(filter).findFirst();
     }
 
     public Optional<Asset> getAssetAtIndex(int index) {
@@ -30,6 +38,11 @@ public class Assets {
 
     public boolean deleteAsset(Asset asset) {
         return assets.remove(asset);
+    }
+
+    @JsonIgnore
+    public boolean isEmpty() {
+        return assets.isEmpty();
     }
 
     @Override
@@ -50,5 +63,9 @@ public class Assets {
         return "Assets{" +
                 "assets=" + assets +
                 '}';
+    }
+
+    public Stream<Asset> stream() {
+        return assets.stream();
     }
 }

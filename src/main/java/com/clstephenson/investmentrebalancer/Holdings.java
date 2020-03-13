@@ -6,6 +6,9 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.*;
+import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class Holdings {
 
@@ -17,6 +20,10 @@ public class Holdings {
 
     public List<Holding> getHoldings() {
         return holdings;
+    }
+
+    public Stream<Holding> getHoldingsThatMatch(Predicate<Holding> filter) {
+        return holdings.stream().filter(filter);
     }
 
     public Optional<Holding> getHoldingAtIndex(int index) {
@@ -32,6 +39,19 @@ public class Holdings {
 
     public boolean deleteHolding(Holding holding) {
         return holdings.remove(holding);
+    }
+
+    public boolean deleteHoldingsThatMatch(Predicate<Holding> filter) {
+        List<Holding> holdingsToDelete = holdings.stream().filter(filter).collect(Collectors.toList());
+        for (Holding holding : holdingsToDelete) {
+            deleteHolding(holding);
+        }
+        return true;
+    }
+
+    @JsonIgnore
+    public boolean isEmpty() {
+        return holdings.isEmpty();
     }
 
     @JsonIgnore

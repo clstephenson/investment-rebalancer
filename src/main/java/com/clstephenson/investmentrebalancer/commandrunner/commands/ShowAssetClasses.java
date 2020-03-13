@@ -3,7 +3,7 @@ package com.clstephenson.investmentrebalancer.commandrunner.commands;
 import com.clstephenson.investmentrebalancer.AssetClass;
 import com.clstephenson.investmentrebalancer.AssetClassCategory;
 
-public class ListAssetClasses extends Command {
+public class ShowAssetClasses extends Command {
 
     @Override
     public String run() {
