@@ -74,8 +74,7 @@ public class Asset {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Asset asset = (Asset) o;
-        return uuid.equals(asset.uuid) &&
-                Objects.equals(name, asset.name) &&
+        return Objects.equals(name, asset.name) &&
                 Objects.equals(symbol, asset.symbol);
     }
 
