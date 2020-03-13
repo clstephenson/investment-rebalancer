@@ -23,22 +23,20 @@ public class DeleteAsset extends Command {
             throw new InvalidOptionsException("Options are required", syntax);
         }
 
-        int index = 0;
-        try {
-            index = Integer.parseInt(
-                    getCommandOptions().getOptionValue("i")
-                            .orElseThrow(() -> new InvalidOptionsException("missing asset number", syntax))
-            );
-        } catch (NumberFormatException e) {
-            throw new InvalidOptionsException("Invalid asset. Use the 'assets' command to show available asset numbers.");
+        String assetName = getCommandOptions().getOptionValue("n")
+                .orElseThrow(() -> new InvalidOptionsException("asset name missing", syntax));
+
+        if (assetName == null || assetName.isEmpty()) {
+            String message = "Invalid command options.";
+            throw new InvalidOptionsException(message, syntax);
         }
 
-        Asset assetToDelete = getContext().getAssets().getAssetAtIndex(index)
+        Asset assetToDelete = getContext().getAssets().getAssetMatching(a -> a.getName().equalsIgnoreCase(assetName))
                 .orElseThrow(() ->
-                        new InvalidOptionsException("Invalid asset. Use the 'assets' command to show available asset numbers."));
+                        new InvalidOptionsException("Invalid asset. Use the 'assets' command to show available assets."));
 
         if (getContext().getHoldings().deleteHoldingsThatMatch(holding -> holding.getAsset().equals(assetToDelete))) {
-            output.append("Deleted holding matching the specified asset.\n");
+            output.append("Deleted holdings matching the specified asset.\n");
             if (getContext().getAssets().deleteAsset(assetToDelete)) {
                 output.append(String.format("Deleted asset %s.", assetToDelete.getName()));
             } else {
