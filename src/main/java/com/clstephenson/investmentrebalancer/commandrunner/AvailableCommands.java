@@ -19,7 +19,7 @@ public enum AvailableCommands {
     UPDATE_TARGET_ASSET_MIX("updatetarget", "updatetarget"),
 
     DELETE_HOLDING("deleteholding", "delete -i [holding ID from list]"),
-    DELETE_ASSET("deleteasset", "delete -i [asset ID from list]"),
+    DELETE_ASSET("deleteasset", "delete -n [asset name]"),
 
     BALANCE("balance", ""),
     EXIT_PROGRAM("exit", "exit")
