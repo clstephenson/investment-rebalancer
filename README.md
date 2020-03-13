@@ -1,4 +1,5 @@
 # Investment Mix Re-balancer
+![Java CI with Maven](https://github.com/clstephenson/investment-rebalancer/workflows/Java%20CI%20with%20Maven/badge.svg?branch=master)
 ## This is a console application that is still a work-in-progress.
 The goal is to use the application to calculate new investment asset allocations based on current assets
 and pre-determined target allocation percentages. I have created, and use a custom Excel workbook, but wanted 
