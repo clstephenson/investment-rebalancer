@@ -12,7 +12,7 @@ import java.util.Scanner;
 import java.util.function.UnaryOperator;
 
 import static com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands.*;
-
+//todo: convert string literals into resources
 public class PortfolioRebalancer {
 
     public static final String DATA_FILE_NAME = "investment-rebalancer.json";
@@ -88,6 +88,7 @@ public class PortfolioRebalancer {
                 .forEach(PortfolioRebalancer::sendMessageToOutput);
     }
 
+    @SuppressWarnings("OptionalGetWithoutIsPresent")
     private static void insertTestData(Context context) {
         //todo: need to update these commands
         try {

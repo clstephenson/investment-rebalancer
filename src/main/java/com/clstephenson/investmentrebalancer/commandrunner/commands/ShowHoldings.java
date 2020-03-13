@@ -26,16 +26,17 @@ public class ShowHoldings extends Command {
             Holdings matchedHoldings = new Holdings();
             if (getCommandOptions() != null) {
                 getCommandOptions().getOptionValue("n")
-                        .ifPresent(s -> {
-                            getContext().getHoldings().getHoldingsThatMatch(
-                                    holding -> holding.getAsset().getName().equalsIgnoreCase(s))
-                                    .forEach(matchedHoldings::add);
-                        });
+                        .ifPresent(s -> getContext().getHoldings()
+                                .getHoldingsThatMatch(holding -> holding.getAsset().getName().equalsIgnoreCase(s))
+                                .forEach(matchedHoldings::add));
             }
 
             if (matchedHoldings.isEmpty()) {
-                output.append(buildOutputString(getContext().getHoldings()));
-                output.append(getContext().getHoldings().getCumulativeAssetMix().toString());
+                output.append(buildOutputString(getContext().getHoldings()))
+                        .append("\n")
+                        .append("Current Overall Asset Allocation:")
+                        .append("\n")
+                        .append(getContext().getHoldings().getCumulativeAssetMix().toString());
             } else {
                 output.append(buildOutputString(matchedHoldings));
             }
@@ -44,7 +45,7 @@ public class ShowHoldings extends Command {
         return output.toString();
     }
 
-    private String buildOutputString (Holdings holdings) {
+    private String buildOutputString(Holdings holdings) {
         StringBuilder output = new StringBuilder();
 
         final String HEADER_ASSET = "Asset";
