@@ -6,7 +6,6 @@ import java.util.Optional;
 public enum AvailableCommands {
 
     SHOW_HOLDINGS("holdings", "holdings\nholdings -n [asset name]"),
-//    SHOW_ASSETS("assets", "assets"),
     SHOW_ASSET_DETAILS( "assets", "assets\nassets -n [asset name]"),
     SHOW_ASSET_CLASSES("classes", "classes"),
     SHOW_TARGET_ASSET_MIX("target", "target"),

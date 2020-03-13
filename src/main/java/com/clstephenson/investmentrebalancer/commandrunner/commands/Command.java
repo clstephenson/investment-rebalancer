@@ -21,9 +21,6 @@ public abstract class Command {
             case SHOW_HOLDINGS:
                 command = new ShowHoldings();
                 break;
-//            case SHOW_ASSETS:
-//                command = new ShowAssets();
-//                break;
             case SHOW_ASSET_DETAILS:
                 command = new ShowAssetDetails();
                 break;
