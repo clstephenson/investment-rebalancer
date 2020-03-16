@@ -1,6 +1,7 @@
 package com.clstephenson.investmentrebalancer.commandrunner.commands;
 
 import com.clstephenson.investmentrebalancer.Asset;
+import com.clstephenson.investmentrebalancer.Holding;
 import com.clstephenson.investmentrebalancer.commandrunner.CommandBuilder;
 import com.clstephenson.investmentrebalancer.context.Context;
 import com.clstephenson.investmentrebalancer.context.ContextFactory;
@@ -9,6 +10,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.mockito.Mock;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 
 public class CommandTest {
 
@@ -30,9 +33,17 @@ public class CommandTest {
         new CommandBuilder().setCommandInput(input).setContext(context).buildCommand().get().run();
     }
 
-    void createAssetsForTest(String ... names) {
+    List<Asset> createAssetsForTest(String ... names) {
+        ArrayList<Asset> assets = new ArrayList<>();
         for (String name : names) {
-            context.getAssets().getAssets().add(new Asset(name, BigDecimal.TEN));
+            Asset asset = new Asset(name, BigDecimal.TEN);
+            assets.add(asset);
+            context.getAssets().getAssets().add(asset);
         }
+        return assets;
+    }
+
+    Holding createHoldingForTest(String assetName, BigDecimal shares) {
+        return new Holding(createAssetsForTest(assetName).get(0), shares);
     }
 }

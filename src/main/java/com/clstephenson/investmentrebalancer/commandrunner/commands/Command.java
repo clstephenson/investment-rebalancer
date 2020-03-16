@@ -36,6 +36,9 @@ public abstract class Command {
             case ADD_OR_UPDATE_ASSET:
                 command = new UpdateAsset();
                 break;
+            case UPDATE_HOLDING:
+                command = new UpdateHolding();
+                break;
             case UPDATE_ASSET_MIX:
                 command = new UpdateAssetMix();
                 break;
