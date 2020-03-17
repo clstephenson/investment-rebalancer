@@ -12,6 +12,7 @@ import java.util.Scanner;
 import java.util.function.UnaryOperator;
 
 import static com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands.*;
+
 //todo: convert string literals into resources
 public class PortfolioRebalancer {
 
@@ -20,7 +21,7 @@ public class PortfolioRebalancer {
     public static void main(String... args) {
         Context context = ContextFactory.getContext(DATA_FILE_NAME);
 
-        if (System.getenv("INSERT_TEST_DATA") != null) {
+        if (System.getenv("INSERT_TEST_DATA") != null && context.getAssets().isEmpty()) {
             insertTestData(context);
         }
 
@@ -90,18 +91,19 @@ public class PortfolioRebalancer {
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
     private static void insertTestData(Context context) {
-        //todo: need to update these commands
         try {
-            sendMessageToOutput(getCommandFromInput("add -n ge -p 3.00 -s 50", context).run());
-            sendMessageToOutput(getCommandFromInput("add -n ge -p 3.00 -s 1000", context).run());
-            context.getHoldings().getAssetFromHoldings("ge").get().getAssetMix().updatePercentageFor(AssetClass.US_STOCKS, BigDecimal.valueOf(100));
-            sendMessageToOutput(getCommandFromInput("add -n agilent -p 56.00 -s 250", context).run());
-            sendMessageToOutput(getCommandFromInput("add -n agilent -p 56.00 -s 100", context).run());
-            context.getHoldings().getAssetFromHoldings("agilent").get().getAssetMix().updatePercentageFor(AssetClass.US_BONDS, BigDecimal.valueOf(100));
-            sendMessageToOutput(getCommandFromInput("holdings", context).run());
-            sendMessageToOutput(getCommandFromInput("assets -n ge", context).run());
+            sendMessageToOutput(getCommandFromInput("updateasset -n stock1 -p 5.00", context).run());
+            sendMessageToOutput(getCommandFromInput("updateasset -n bond1 -p 3.00", context).run());
+            sendMessageToOutput(getCommandFromInput("addholding -n stock1 -s 250", context).run());
+            sendMessageToOutput(getCommandFromInput("addholding -n stock1 -s 50", context).run());
+            sendMessageToOutput(getCommandFromInput("addholding -n bond1 -s 100", context).run());
+            sendMessageToOutput(getCommandFromInput("addholding -n bond1 -s 500", context).run());
+            context.getHoldings().getAssetFromHoldings("stock1").get().getAssetMix().updatePercentageFor(AssetClass.US_STOCKS, BigDecimal.valueOf(100));
+            context.getHoldings().getAssetFromHoldings("bond1").get().getAssetMix().updatePercentageFor(AssetClass.US_BONDS, BigDecimal.valueOf(100));
             context.getTargetMix().getAssetMix().updatePercentageFor(AssetClass.US_STOCKS, BigDecimal.valueOf(60));
             context.getTargetMix().getAssetMix().updatePercentageFor(AssetClass.US_BONDS, BigDecimal.valueOf(40));
+            sendMessageToOutput(getCommandFromInput("assets", context).run());
+            sendMessageToOutput(getCommandFromInput("holdings", context).run());
             sendMessageToOutput(getCommandFromInput("balance", context).run());
         } catch (Exception e) {
             throw new RuntimeException(e);
