@@ -56,7 +56,8 @@ public class ShowAssetDetails extends Command {
                     .map(Holding::getNumberOfShares)
                     .reduce(BigDecimal::add).orElse(BigDecimal.ZERO);
 
-            output.append(String.format("Name: %s\n", asset.getName()))
+            output.append("\n")
+                    .append(String.format("Name: %s\n", asset.getName()))
                     .append(String.format("Symbol: %s\n", asset.getSymbol()))
                     .append(String.format("Price per Share: %s\n", asset.getPricePerShare().toString()))
                     .append(String.format("Total Shares in Holdings: %s\n", totalSharesInHoldings))
