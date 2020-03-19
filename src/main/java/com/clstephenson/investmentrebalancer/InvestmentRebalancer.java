@@ -14,7 +14,7 @@ import java.util.function.UnaryOperator;
 import static com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands.*;
 
 //todo: convert string literals into resources
-public class PortfolioRebalancer {
+public class InvestmentRebalancer {
 
     public static final String DATA_FILE_NAME = "investment-rebalancer.json";
 
@@ -86,7 +86,7 @@ public class PortfolioRebalancer {
         // todo: add help message
         Arrays.stream(values())
                 .map(AvailableCommands::getCommandLineInstruction)
-                .forEach(PortfolioRebalancer::sendMessageToOutput);
+                .forEach(InvestmentRebalancer::sendMessageToOutput);
     }
 
     @SuppressWarnings("OptionalGetWithoutIsPresent")
