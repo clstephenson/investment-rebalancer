@@ -18,7 +18,7 @@ class AddHoldingTest extends CommandTest {
 
     @Test
     void givenAssets_whenAddHolding_oneHoldingIsFound() throws Exception {
-        String cmd = AvailableCommands.ADD_HOLDING.getCommandLineInstruction();
+        String cmd = AvailableCommands.ADD_HOLDING.getCommandKey();
         createAssetsForTest("stock1", "stock2");
         String input = String.format("%s -n %s -s %s", cmd, "stock1", BigDecimal.TEN);
         new CommandBuilder().setCommandInput(input).setContext(context).buildCommand().get().run();
@@ -27,7 +27,7 @@ class AddHoldingTest extends CommandTest {
 
     @Test
     void givenAssets_whenAddHolding_holdingContainsAssetWithCorrectName() throws Exception {
-        String cmd = AvailableCommands.ADD_HOLDING.getCommandLineInstruction();
+        String cmd = AvailableCommands.ADD_HOLDING.getCommandKey();
         createAssetsForTest("stock1", "stock2");
         String input = String.format("%s -n %s -s %s", cmd, "stock1", BigDecimal.TEN);
         new CommandBuilder().setCommandInput(input).setContext(context).buildCommand().get().run();
@@ -36,7 +36,7 @@ class AddHoldingTest extends CommandTest {
 
     @Test
     void givenEmptyAssetName_whenAddHolding_throwsInvalidOptionsException() throws Exception {
-        String cmd = AvailableCommands.ADD_HOLDING.getCommandLineInstruction();
+        String cmd = AvailableCommands.ADD_HOLDING.getCommandKey();
         String input = String.format("%s -n -s %s", cmd, BigDecimal.TEN);
         Command command = new CommandBuilder().setCommandInput(input).setContext(context).buildCommand().get();
         assertThrows(InvalidOptionsException.class, () -> command.run());
@@ -44,7 +44,7 @@ class AddHoldingTest extends CommandTest {
 
     @Test
     void givenAssetNameOptionMissing_whenAddHolding_throwsInvalidOptionsException() throws Exception {
-        String cmd = AvailableCommands.ADD_HOLDING.getCommandLineInstruction();
+        String cmd = AvailableCommands.ADD_HOLDING.getCommandKey();
         String input = String.format("%s -s %s", cmd, BigDecimal.TEN);
         Command command = new CommandBuilder().setCommandInput(input).setContext(context).buildCommand().get();
         assertThrows(InvalidOptionsException.class, () -> command.run());
@@ -52,7 +52,7 @@ class AddHoldingTest extends CommandTest {
 
     @Test
     void givenEmptyShares_whenAddHolding_throwsInvalidOptionsException() throws Exception {
-        String cmd = AvailableCommands.ADD_HOLDING.getCommandLineInstruction();
+        String cmd = AvailableCommands.ADD_HOLDING.getCommandKey();
         String input = String.format("%s -n stockname -s", cmd);
         Command command = new CommandBuilder().setCommandInput(input).setContext(context).buildCommand().get();
         assertThrows(InvalidOptionsException.class, () -> command.run());
@@ -60,7 +60,7 @@ class AddHoldingTest extends CommandTest {
 
     @Test
     void givenSharesOptionMissing_whenAddHolding_throwsInvalidOptionsException() throws Exception {
-        String cmd = AvailableCommands.ADD_HOLDING.getCommandLineInstruction();
+        String cmd = AvailableCommands.ADD_HOLDING.getCommandKey();
         String input = String.format("%s -n stockname", cmd);
         Command command = new CommandBuilder().setCommandInput(input).setContext(context).buildCommand().get();
         assertThrows(InvalidOptionsException.class, () -> command.run());

@@ -5,50 +5,49 @@ import java.util.Optional;
 
 public enum AvailableCommands {
 
-    SHOW_HOLDINGS("holdings", "holdings\nholdings -n [asset name]"),
-    SHOW_ASSET_DETAILS( "assets", "assets\nassets -n [asset name]"),
-    SHOW_ASSET_CLASSES("classes", "classes"),
-    SHOW_TARGET_ASSET_MIX("target", "target"),
+    SHOW_HOLDINGS("cmd.showHoldings", "syntax.showHoldings"),
+    SHOW_ASSET_DETAILS("cmd.showAssetDetails", "syntax.showAssetDetails"),
+    SHOW_ASSET_CLASSES("cmd.showAssetClasses", "syntax.showAssetClasses"),
+    SHOW_TARGET_ASSET_MIX("cmd.showTargetMix", "syntax.showTargetMix"),
 
-    ADD_HOLDING("addholding", "addholding -n [asset name] -s [number of shares]"),
-    ADD_OR_UPDATE_ASSET("updateasset", "updateasset -n [asset name] -p [share price]"),
+    ADD_HOLDING("cmd.addHolding", "syntax.addHolding"),
+    ADD_OR_UPDATE_ASSET("cmd.updateAsset", "syntax.updateAsset"),
 
-    UPDATE_HOLDING("updateholding", "updateholding -i [holding ID from list] -s [number of shares]"),
-    UPDATE_ASSET_MIX("updatemix", "updatemix -n [asset name]"),
-    UPDATE_TARGET_ASSET_MIX("updatetarget", "updatetarget"),
+    UPDATE_HOLDING("cmd.updateHolding", "syntax.updateHolding"),
+    UPDATE_ASSET_MIX("cmd.updateAssetMix", "syntax.updateAssetMix"),
+    UPDATE_TARGET_ASSET_MIX("cmd.updateTargetMix", "syntax.updateTargetMix"),
 
-    DELETE_HOLDING("deleteholding", "delete -i [holding ID from list]"),
-    DELETE_ASSET("deleteasset", "delete -n [asset name]"),
+    DELETE_HOLDING("cmd.deleteHolding", "syntax.deleteHolding"),
+    DELETE_ASSET("cmd.deleteAsset", "syntax.deleteAsset"),
 
-    BALANCE("balance", ""),
-    EXIT_PROGRAM("exit", "exit")
-    ;
+    BALANCE("cmd.balance", "syntax.balance"),
+    EXIT_PROGRAM("cmd.exit", "syntax.exit");
 
-    private final String command;
-    private final String syntax;
+    private final String commandKey;
+    private final String syntaxKey;
 
-    AvailableCommands(String commandLineInstruction, String syntax) {
-        this.command = commandLineInstruction;
-        this.syntax = syntax;
+    AvailableCommands(String commandKey, String syntaxKey) {
+        this.commandKey = commandKey;
+        this.syntaxKey = syntaxKey;
     }
 
-    public static boolean matchesAvailableCommand (String text) {
+    public static boolean matchesAvailableCommand(String text) {
         return Arrays.stream(AvailableCommands.values())
-                .map(AvailableCommands::getCommandLineInstruction)
+                .map(AvailableCommands::getCommandKey)
                 .anyMatch(s -> s.equals(text));
     }
 
-    public static Optional<AvailableCommands> getCommandFromInstruction(String commandInput) {
+    public static Optional<AvailableCommands> getCommandFromCommandKey(String commandKey) {
         return Arrays.stream(AvailableCommands.values())
-                .filter(command -> command.getCommandLineInstruction().equals(commandInput))
+                .filter(command -> command.getCommandKey().equals(commandKey))
                 .findFirst();
     }
 
-    public String getCommandLineInstruction() {
-        return command;
+    public String getCommandKey() {
+        return commandKey;
     }
 
-    public String getSyntaxHelp() {
-        return syntax;
+    public String getSyntaxKey() {
+        return syntaxKey;
     }
 }

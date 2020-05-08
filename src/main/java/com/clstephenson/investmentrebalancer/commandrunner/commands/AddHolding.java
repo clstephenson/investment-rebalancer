@@ -3,7 +3,6 @@ package com.clstephenson.investmentrebalancer.commandrunner.commands;
 import com.clstephenson.investmentrebalancer.Asset;
 import com.clstephenson.investmentrebalancer.Holding;
 import com.clstephenson.investmentrebalancer.Validations;
-import com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidOptionsException;
 
 import java.math.BigDecimal;
@@ -14,7 +13,7 @@ public class AddHolding extends Command {
     public String run()
             throws InvalidOptionsException {
 
-        String syntax = AvailableCommands.ADD_HOLDING.getSyntaxHelp();
+        String syntax = getContext().getStringResource(getCommandType().getSyntaxKey());
 
         if (getCommandOptions() == null) {
             throw new InvalidOptionsException("Options are required", syntax);

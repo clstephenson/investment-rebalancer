@@ -8,7 +8,8 @@ import com.clstephenson.investmentrebalancer.commandrunner.InvalidOptionsExcepti
 import java.math.BigDecimal;
 import java.util.stream.Stream;
 
-import static com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands.*;
+import static com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands.ADD_OR_UPDATE_ASSET;
+import static com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands.SHOW_ASSET_DETAILS;
 
 public class ShowAssetDetails extends Command {
 
@@ -24,13 +25,14 @@ public class ShowAssetDetails extends Command {
 
         if (getContext().getAssets().isEmpty()) {
             output.append("There are no assets yet. Use the following command to add one...\n");
-            output.append(ADD_OR_UPDATE_ASSET.getSyntaxHelp());
+            output.append(getContext().getStringResource(ADD_OR_UPDATE_ASSET.getSyntaxKey()));
         } else {
             Asset matchedAsset = null;
 
             if (getCommandOptions() != null) {
                 String assetName = getCommandOptions().getOptionValue("n")
-                        .orElseThrow(() -> new InvalidOptionsException("asset name missing", SHOW_ASSET_DETAILS.getSyntaxHelp()));
+                        .orElseThrow(() -> new InvalidOptionsException("asset name missing",
+                                getContext().getStringResource(SHOW_ASSET_DETAILS.getSyntaxKey())));
 
                 matchedAsset = getContext().getAssets()
                         .getAssetMatching(asset -> asset.getName().equalsIgnoreCase(assetName))

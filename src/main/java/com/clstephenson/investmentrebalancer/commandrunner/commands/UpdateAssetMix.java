@@ -2,7 +2,6 @@ package com.clstephenson.investmentrebalancer.commandrunner.commands;
 
 import com.clstephenson.investmentrebalancer.Asset;
 import com.clstephenson.investmentrebalancer.AssetMix;
-import com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidAssetMixPercentageValue;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidCommandArgsException;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidOptionsException;
@@ -18,7 +17,7 @@ public class UpdateAssetMix extends Command {
             throw new InvalidCommandArgsException("UpdateMix requires Holdings object to run.");
         }
 
-        String syntax = AvailableCommands.UPDATE_ASSET_MIX.getSyntaxHelp();
+        String syntax = getContext().getStringResource(getCommandType().getSyntaxKey());
 
         if (getCommandOptions() == null) {
             throw new InvalidOptionsException("Options are required", syntax);

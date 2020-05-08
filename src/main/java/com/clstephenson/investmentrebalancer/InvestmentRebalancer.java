@@ -17,9 +17,10 @@ import static com.clstephenson.investmentrebalancer.commandrunner.AvailableComma
 public class InvestmentRebalancer {
 
     public static final String DATA_FILE_NAME = "investment-rebalancer.json";
+    private static Context context;
 
     public static void main(String... args) {
-        Context context = ContextFactory.getContext(DATA_FILE_NAME);
+        context = ContextFactory.getContext(DATA_FILE_NAME);
 
         if (System.getenv("INSERT_TEST_DATA") != null && context.getAssets().isEmpty()) {
             insertTestData(context);
@@ -85,7 +86,7 @@ public class InvestmentRebalancer {
     private static void printHelp() {
         // todo: add help message
         Arrays.stream(values())
-                .map(AvailableCommands::getCommandLineInstruction)
+                .map(availableCommands -> context.getStringResource(availableCommands.getCommandKey()))
                 .forEach(InvestmentRebalancer::sendMessageToOutput);
     }
 

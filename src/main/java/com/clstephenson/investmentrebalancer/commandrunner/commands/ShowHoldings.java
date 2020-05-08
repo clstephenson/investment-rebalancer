@@ -21,7 +21,7 @@ public class ShowHoldings extends Command {
 
         if (getContext().getHoldings().isEmpty()) {
             output.append("There are no holdings yet. Use the following command to add one...\n");
-            output.append(ADD_HOLDING.getSyntaxHelp());
+            output.append(getContext().getStringResource(ADD_HOLDING.getSyntaxKey()));
         } else {
             Holdings matchedHoldings = new Holdings();
             if (getCommandOptions() != null) {

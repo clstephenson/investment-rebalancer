@@ -1,7 +1,6 @@
 package com.clstephenson.investmentrebalancer.commandrunner.commands;
 
 import com.clstephenson.investmentrebalancer.Holding;
-import com.clstephenson.investmentrebalancer.commandrunner.AvailableCommands;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidCommandArgsException;
 import com.clstephenson.investmentrebalancer.commandrunner.InvalidOptionsException;
 
@@ -17,7 +16,7 @@ public class UpdateHolding extends Command {
             throw new InvalidCommandArgsException("UpdateAsset requires Holdings object to run.");
         }
 
-        String syntax = AvailableCommands.UPDATE_HOLDING.getSyntaxHelp();
+        String syntax = getContext().getStringResource(getCommandType().getSyntaxKey());
 
         if (getCommandOptions() == null) {
             throw new InvalidOptionsException("Options are required", syntax);

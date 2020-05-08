@@ -19,7 +19,7 @@ class UpdateHoldingTest extends CommandTest {
 
     @Test
     void givenHoldingsWithOneHolding_whenUpdateHolding_holdingsContainsOneHolding() throws Exception {
-        String cmd = AvailableCommands.UPDATE_HOLDING.getCommandLineInstruction();
+        String cmd = AvailableCommands.UPDATE_HOLDING.getCommandKey();
         Holding holding = createHoldingForTest("stock1", BigDecimal.TEN);
         context.getHoldings().add(holding);
         String input = String.format("%s -i %s -s %s", cmd, "0", BigDecimal.ONE);
@@ -29,7 +29,7 @@ class UpdateHoldingTest extends CommandTest {
 
     @Test
     void givenHoldings_whenUpdateHolding_holdingContainsAssetWithCorrectShares() throws Exception {
-        String cmd = AvailableCommands.UPDATE_HOLDING.getCommandLineInstruction();
+        String cmd = AvailableCommands.UPDATE_HOLDING.getCommandKey();
         Holding holding = createHoldingForTest("stock1", BigDecimal.TEN);
         context.getHoldings().add(holding);
         String input = String.format("%s -i %s -s %s", cmd, "0", BigDecimal.ONE);
@@ -39,7 +39,7 @@ class UpdateHoldingTest extends CommandTest {
 
     @Test
     void givenOutOfRangeIndex_whenAddHolding_throwsInvalidOptionsException() throws Exception {
-        String cmd = AvailableCommands.UPDATE_HOLDING.getCommandLineInstruction();
+        String cmd = AvailableCommands.UPDATE_HOLDING.getCommandKey();
         Holding holding = createHoldingForTest("stock1", BigDecimal.TEN);
         context.getHoldings().add(holding);
         String input = String.format("%s -i %s -s %s", cmd, "2", BigDecimal.ONE);
@@ -49,7 +49,7 @@ class UpdateHoldingTest extends CommandTest {
 
     @Test
     void givenEmptyIndex_whenAddHolding_throwsInvalidOptionsException() throws Exception {
-        String cmd = AvailableCommands.UPDATE_HOLDING.getCommandLineInstruction();
+        String cmd = AvailableCommands.UPDATE_HOLDING.getCommandKey();
         Holding holding = createHoldingForTest("stock1", BigDecimal.TEN);
         context.getHoldings().add(holding);
         String input = String.format("%s -i -s %s", cmd, BigDecimal.ONE);
@@ -59,7 +59,7 @@ class UpdateHoldingTest extends CommandTest {
 
     @Test
     void givenIndexOptionMissing_whenAddHolding_throwsInvalidOptionsException() throws Exception {
-        String cmd = AvailableCommands.UPDATE_HOLDING.getCommandLineInstruction();
+        String cmd = AvailableCommands.UPDATE_HOLDING.getCommandKey();
         Holding holding = createHoldingForTest("stock1", BigDecimal.TEN);
         context.getHoldings().add(holding);
         String input = String.format("%s -s %s", cmd, BigDecimal.ONE);
@@ -69,7 +69,7 @@ class UpdateHoldingTest extends CommandTest {
 
     @Test
     void givenEmptyShares_whenAddHolding_sharesDoesNotChange() throws Exception {
-        String cmd = AvailableCommands.UPDATE_HOLDING.getCommandLineInstruction();
+        String cmd = AvailableCommands.UPDATE_HOLDING.getCommandKey();
         Holding holding = createHoldingForTest("stock1", BigDecimal.TEN);
         context.getHoldings().add(holding);
         String input = String.format("%s -i %s -s", cmd, "0");
@@ -79,7 +79,7 @@ class UpdateHoldingTest extends CommandTest {
 
     @Test
     void givenSharesOptionMissing_whenAddHolding_throwsInvalidOptionsException() throws Exception {
-        String cmd = AvailableCommands.UPDATE_HOLDING.getCommandLineInstruction();
+        String cmd = AvailableCommands.UPDATE_HOLDING.getCommandKey();
         Holding holding = createHoldingForTest("stock1", BigDecimal.TEN);
         context.getHoldings().add(holding);
         String input = String.format("%s -i %s", cmd, "0");

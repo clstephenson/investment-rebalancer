@@ -5,18 +5,22 @@ import com.clstephenson.investmentrebalancer.Holdings;
 import com.clstephenson.investmentrebalancer.TargetMix;
 
 import java.io.File;
+import java.util.ResourceBundle;
+import java.util.Set;
 
 public class Context {
     private File dataFile;
     private Holdings holdings;
     private Assets assets;
     private TargetMix targetMix;
+    private ResourceBundle resourceBundle;
 
     Context() {
         this.dataFile = null;
         this.holdings = new Holdings();
         this.assets = new Assets();
         this.targetMix = new TargetMix();
+        this.resourceBundle = ResourceBundle.getBundle("strings");
     }
 
     public Holdings getHoldings() {
@@ -49,5 +53,17 @@ public class Context {
 
     public void setDataFile(File dataFile) {
         this.dataFile = dataFile;
+    }
+
+    public String getStringResource(String key) {
+        if (resourceBundle.containsKey(key)) {
+            return resourceBundle.getString(key);
+        } else {
+            throw new RuntimeException("Key " + key + " not found in resource bundle.");
+        }
+    }
+
+    public Set<String> getResourceKeys() {
+        return resourceBundle.keySet();
     }
 }

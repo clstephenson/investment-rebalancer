@@ -22,7 +22,7 @@ public class BalanceAssets extends Command {
 
         if (getContext().getHoldings().isEmpty()) {
             output.append("There are no holdings yet. Add a holding using the following command...\n");
-            output.append(AvailableCommands.ADD_HOLDING.getSyntaxHelp());
+            output.append(getContext().getStringResource(AvailableCommands.ADD_HOLDING.getSyntaxKey()));
         } else {
             Map<AssetClass, BigDecimal> currentValuations = getContext().getHoldings().getCurrentValuations();
             Map<AssetClass, BigDecimal> targetValuations = getContext().getTargetMix().getTargetValuations(getContext().getHoldings());
