@@ -22,7 +22,7 @@ class UpdateHoldingTest extends CommandTest {
         String cmd = AvailableCommands.UPDATE_HOLDING.getCommandKey();
         Holding holding = createHoldingForTest("stock1", BigDecimal.TEN);
         context.getHoldings().add(holding);
-        String input = String.format("%s -i %s -s %s", cmd, "0", BigDecimal.ONE);
+        String input = String.format("%s -i %s -s %s", getStringResource(cmd), "0", BigDecimal.ONE);
         new CommandBuilder().setCommandInput(input).setContext(context).buildCommand().get().run();
         assertThat(context.getHoldings().getHoldings().size(), is(1));
     }
@@ -32,7 +32,7 @@ class UpdateHoldingTest extends CommandTest {
         String cmd = AvailableCommands.UPDATE_HOLDING.getCommandKey();
         Holding holding = createHoldingForTest("stock1", BigDecimal.TEN);
         context.getHoldings().add(holding);
-        String input = String.format("%s -i %s -s %s", cmd, "0", BigDecimal.ONE);
+        String input = String.format("%s -i %s -s %s", getStringResource(cmd), "0", BigDecimal.ONE);
         new CommandBuilder().setCommandInput(input).setContext(context).buildCommand().get().run();
         assertThat(context.getHoldings().getHoldings().get(0).getNumberOfShares(), is(BigDecimal.ONE));
     }
@@ -42,7 +42,7 @@ class UpdateHoldingTest extends CommandTest {
         String cmd = AvailableCommands.UPDATE_HOLDING.getCommandKey();
         Holding holding = createHoldingForTest("stock1", BigDecimal.TEN);
         context.getHoldings().add(holding);
-        String input = String.format("%s -i %s -s %s", cmd, "2", BigDecimal.ONE);
+        String input = String.format("%s -i %s -s %s", getStringResource(cmd), "2", BigDecimal.ONE);
         Command command = new CommandBuilder().setCommandInput(input).setContext(context).buildCommand().get();
         assertThrows(InvalidOptionsException.class, () -> command.run());
     }
@@ -52,7 +52,7 @@ class UpdateHoldingTest extends CommandTest {
         String cmd = AvailableCommands.UPDATE_HOLDING.getCommandKey();
         Holding holding = createHoldingForTest("stock1", BigDecimal.TEN);
         context.getHoldings().add(holding);
-        String input = String.format("%s -i -s %s", cmd, BigDecimal.ONE);
+        String input = String.format("%s -i -s %s", getStringResource(cmd), BigDecimal.ONE);
         Command command = new CommandBuilder().setCommandInput(input).setContext(context).buildCommand().get();
         assertThrows(InvalidOptionsException.class, () -> command.run());
     }
@@ -62,7 +62,7 @@ class UpdateHoldingTest extends CommandTest {
         String cmd = AvailableCommands.UPDATE_HOLDING.getCommandKey();
         Holding holding = createHoldingForTest("stock1", BigDecimal.TEN);
         context.getHoldings().add(holding);
-        String input = String.format("%s -s %s", cmd, BigDecimal.ONE);
+        String input = String.format("%s -s %s", getStringResource(cmd), BigDecimal.ONE);
         Command command = new CommandBuilder().setCommandInput(input).setContext(context).buildCommand().get();
         assertThrows(InvalidOptionsException.class, () -> command.run());
     }
@@ -72,7 +72,7 @@ class UpdateHoldingTest extends CommandTest {
         String cmd = AvailableCommands.UPDATE_HOLDING.getCommandKey();
         Holding holding = createHoldingForTest("stock1", BigDecimal.TEN);
         context.getHoldings().add(holding);
-        String input = String.format("%s -i %s -s", cmd, "0");
+        String input = String.format("%s -i %s -s", getStringResource(cmd), "0");
         new CommandBuilder().setCommandInput(input).setContext(context).buildCommand().get().run();
         assertThat(context.getHoldings().getHoldings().get(0).getNumberOfShares(), is(BigDecimal.TEN));
     }
@@ -82,7 +82,7 @@ class UpdateHoldingTest extends CommandTest {
         String cmd = AvailableCommands.UPDATE_HOLDING.getCommandKey();
         Holding holding = createHoldingForTest("stock1", BigDecimal.TEN);
         context.getHoldings().add(holding);
-        String input = String.format("%s -i %s", cmd, "0");
+        String input = String.format("%s -i %s", getStringResource(cmd), "0");
         new CommandBuilder().setCommandInput(input).setContext(context).buildCommand().get().run();
         assertThat(context.getHoldings().getHoldings().get(0).getNumberOfShares(), is(BigDecimal.TEN));
     }

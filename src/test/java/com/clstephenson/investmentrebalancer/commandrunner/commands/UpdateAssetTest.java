@@ -20,7 +20,7 @@ class UpdateAssetTest extends CommandTest {
     void whenAddAsset_oneAssetIsFound() throws Exception {
         String cmd = AvailableCommands.ADD_OR_UPDATE_ASSET.getCommandKey();
         String name = "teststock";
-        runCommand(String.format("%s -n %s -p %s", cmd, name, BigDecimal.ONE));
+        runCommand(String.format("%s -n %s -p %s", getStringResource(cmd), name, BigDecimal.ONE));
         assertThat(context.getAssets().getAssets().size(), is(1));
     }
 
@@ -28,7 +28,7 @@ class UpdateAssetTest extends CommandTest {
     void assetNameWithOneWord_whenAddAsset_AssetFoundWithCorrectName() throws Exception {
         String cmd = AvailableCommands.ADD_OR_UPDATE_ASSET.getCommandKey();
         String name = "teststock";
-        runCommand(String.format("%s -n %s -p %s", cmd, name, BigDecimal.ONE));
+        runCommand(String.format("%s -n %s -p %s", getStringResource(cmd), name, BigDecimal.ONE));
         Asset asset = context.getAssets().getAssetAtIndex(0).get();
         assertThat(asset.getName(), is(name));
     }
@@ -37,7 +37,7 @@ class UpdateAssetTest extends CommandTest {
     void assetNameWithMultipleWords_whenAddAsset_AssetFoundWithCorrectName() throws Exception {
         String cmd = AvailableCommands.ADD_OR_UPDATE_ASSET.getCommandKey();
         String name = "test stock";
-        runCommand(String.format("%s -n %s -p %s", cmd, name, BigDecimal.ONE));
+        runCommand(String.format("%s -n %s -p %s", getStringResource(cmd), name, BigDecimal.ONE));
         Asset asset = context.getAssets().getAssetAtIndex(0).get();
         assertThat(asset.getName(), is(name));
     }
@@ -46,7 +46,7 @@ class UpdateAssetTest extends CommandTest {
     void assetPriceWithNoDecimals_whenAddAsset_AssetIsFoundWithCorrectPrice() throws Exception {
         String cmd = AvailableCommands.ADD_OR_UPDATE_ASSET.getCommandKey();
         String price = "3";
-        runCommand(String.format("%s -n %s -p %s", cmd, "name", price));
+        runCommand(String.format("%s -n %s -p %s", getStringResource(cmd), "name", price));
         Asset asset = context.getAssets().getAssetAtIndex(0).get();
         assertThat(asset.getPricePerShare(), is(new BigDecimal(price)));
     }
@@ -55,7 +55,7 @@ class UpdateAssetTest extends CommandTest {
     void assetPriceWithDecimals_whenAddAsset_AssetIsFoundWithCorrectPrice() throws Exception {
         String cmd = AvailableCommands.ADD_OR_UPDATE_ASSET.getCommandKey();
         String price = "3.002";
-        runCommand(String.format("%s -n %s -p %s", cmd, "name", price));
+        runCommand(String.format("%s -n %s -p %s", getStringResource(cmd), "name", price));
         Asset asset = context.getAssets().getAssetAtIndex(0).get();
         assertThat(asset.getPricePerShare(), is(new BigDecimal(price)));
     }
@@ -63,35 +63,35 @@ class UpdateAssetTest extends CommandTest {
     @Test
     void missingAssetNameOption_whenAddAsset_throwsInvalidOptionsException() {
         String cmd = AvailableCommands.ADD_OR_UPDATE_ASSET.getCommandKey();
-        String input = String.format("%s -p %s", cmd, BigDecimal.ONE);
+        String input = String.format("%s -p %s", getStringResource(cmd), BigDecimal.ONE);
         assertThrows(InvalidOptionsException.class, () -> runCommand(input));
     }
 
     @Test
     void emptyAssetName_whenAddAsset_throwsInvalidOptionsException() {
         String cmd = AvailableCommands.ADD_OR_UPDATE_ASSET.getCommandKey();
-        String input = String.format("%s -n -p %s", cmd, BigDecimal.ONE);
+        String input = String.format("%s -n -p %s", getStringResource(cmd), BigDecimal.ONE);
         assertThrows(InvalidOptionsException.class, () -> runCommand(input));
     }
 
     @Test
     void missingAssetPriceOption_whenAddAsset_throwsInvalidOptionsException() {
         String cmd = AvailableCommands.ADD_OR_UPDATE_ASSET.getCommandKey();
-        String input = String.format("%s -n %s", cmd, "name");
+        String input = String.format("%s -n %s", getStringResource(cmd), "name");
         assertThrows(InvalidOptionsException.class, () -> runCommand(input));
     }
 
     @Test
     void emptyAssetPrice_whenAddAsset_throwsInvalidOptionsException() {
         String cmd = AvailableCommands.ADD_OR_UPDATE_ASSET.getCommandKey();
-        String input = String.format("%s -n %s -p", cmd, "name");
+        String input = String.format("%s -n %s -p", getStringResource(cmd), "name");
         assertThrows(InvalidOptionsException.class, () -> runCommand(input));
     }
 
     @Test
     void assetPriceNotNumeric_whenAddAsset_throwsInvalidOptionsException() {
         String cmd = AvailableCommands.ADD_OR_UPDATE_ASSET.getCommandKey();
-        String input = String.format("%s -n %s -p %s", cmd, "name", "3.H");
+        String input = String.format("%s -n %s -p %s", getStringResource(cmd), "name", "3.H");
         assertThrows(InvalidOptionsException.class, () -> runCommand(input));
     }
 
@@ -101,7 +101,7 @@ class UpdateAssetTest extends CommandTest {
         Asset existing = new Asset(name, BigDecimal.TEN);
         context.getAssets().getAssets().add(existing);
         String cmd = AvailableCommands.ADD_OR_UPDATE_ASSET.getCommandKey();
-        runCommand(String.format("%s -n %s -p %s", cmd, name, BigDecimal.ONE));
+        runCommand(String.format("%s -n %s -p %s", getStringResource(cmd), name, BigDecimal.ONE));
         assertThat(context.getAssets().getAssets().size(), is(1));
     }
 
@@ -112,7 +112,7 @@ class UpdateAssetTest extends CommandTest {
         Asset existing = new Asset(name, BigDecimal.TEN);
         context.getAssets().getAssets().add(existing);
         String cmd = AvailableCommands.ADD_OR_UPDATE_ASSET.getCommandKey();
-        runCommand(String.format("%s -n %s -p %s", cmd, name, new BigDecimal(newPrice)));
+        runCommand(String.format("%s -n %s -p %s", getStringResource(cmd), name, new BigDecimal(newPrice)));
         assertThat(context.getAssets().getAssets().get(0).getPricePerShare(), is(new BigDecimal(newPrice)));
     }
 
@@ -121,7 +121,7 @@ class UpdateAssetTest extends CommandTest {
         Asset existing = new Asset("stock 1", BigDecimal.TEN);
         context.getAssets().getAssets().add(existing);
         String cmd = AvailableCommands.ADD_OR_UPDATE_ASSET.getCommandKey();
-        runCommand(String.format("%s -n %s -p %s", cmd, "stock 2", BigDecimal.ONE));
+        runCommand(String.format("%s -n %s -p %s", getStringResource(cmd), "stock 2", BigDecimal.ONE));
         assertThat(context.getAssets().getAssets().size(), is(2));
     }
 

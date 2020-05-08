@@ -29,11 +29,15 @@ public class CommandTest {
         context.getAssets().getAssets().clear();
     }
 
+    String getStringResource(String key) {
+        return context.getStringResource(key);
+    }
+
     void runCommand(String input) throws Exception {
         new CommandBuilder().setCommandInput(input).setContext(context).buildCommand().get().run();
     }
 
-    List<Asset> createAssetsForTest(String ... names) {
+    List<Asset> createAssetsForTest(String... names) {
         ArrayList<Asset> assets = new ArrayList<>();
         for (String name : names) {
             Asset asset = new Asset(name, BigDecimal.TEN);
